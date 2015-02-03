@@ -2,6 +2,7 @@ package com.naddiaz.tfg.managermodule;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,15 +10,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.os.Build;
 import android.widget.Button;
 
 
-public class MainActivity extends ActionBarActivity {
+public class WsNoParamsActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_ws_no_params);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
@@ -29,7 +31,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_ws_no_params, menu);
         return true;
     }
 
@@ -42,13 +44,9 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_ws_simple) {
-            Intent intent = new Intent(this,WsNoParamsActivity.class);
-            startActivity(intent);
             return true;
         }
-        if (id == R.id.action_ws_params) {
-            return true;
-        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -63,16 +61,10 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_ws_no_params, container, false);
+            Button btn_get_date = (Button) rootView.findViewById(R.id.btn_get_date);
 
-            Button btn_ws_no_params = (Button) rootView.findViewById(R.id.btn_ws_no_params);
-            btn_ws_no_params.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(),WsNoParamsActivity.class);
-                    startActivity(intent);
-                }
-            });
+            btn_get_date.setOnClickListener(new OnClick_ws_date(rootView));
             return rootView;
         }
     }
