@@ -13,9 +13,14 @@
     <string name="minutes">Minutes</string>
     <string name="seconds">Seconds</string>
     <string name="spacing">______</string>
-    <string name="action_ws_simple">WS no Params</string>
+    <string name="action_ws_no_params">WS no Params</string>
     <string name="action_ws_params">WS Params</string>
     <string name="title_activity_ws_no_params">MM: No Params</string>
+    <string name="title_activity_wsparams">MM: Params</string>
     <string name="main_description">This is a Simple Web Service to get Date data</string>
+    <string name="title_activity_ws_params">WsParamsActivity</string>
+    <string name="daysbetween">Days Between</string>
+    <string name="dayweek">Day of Week</string>
+    <string name="checkday">Check Day</string>
 
 </resources>

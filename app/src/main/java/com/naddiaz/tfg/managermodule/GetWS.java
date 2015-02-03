@@ -55,7 +55,6 @@ public class GetWS  extends AsyncTask<String, Void, Boolean> {
 
         for (int i = 0; i < params.length; i++) {
             int id = rootView.getResources().getIdentifier("txt_"+params[i],"id",rootView.getContext().getPackageName());
-            Log.d("TRACE", String.valueOf(id) + ": ");
             TextView txt = (TextView) rootView.findViewById(id);
             try {
                 txt.setText(jObject.getString(params[i]));

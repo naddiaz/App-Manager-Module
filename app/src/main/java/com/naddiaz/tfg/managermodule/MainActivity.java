@@ -41,12 +41,14 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_ws_simple) {
+        if (id == R.id.action_ws_no_params) {
             Intent intent = new Intent(this,WsNoParamsActivity.class);
             startActivity(intent);
             return true;
         }
         if (id == R.id.action_ws_params) {
+            Intent intent = new Intent(this,WsParamsActivity.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -70,6 +72,15 @@ public class MainActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(),WsNoParamsActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            Button btn_ws_params = (Button) rootView.findViewById(R.id.btn_ws_params);
+            btn_ws_params.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(),WsParamsActivity.class);
                     startActivity(intent);
                 }
             });

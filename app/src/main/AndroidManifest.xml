@@ -22,6 +22,10 @@
             android:name=".WsNoParamsActivity"
             android:label="@string/title_activity_ws_no_params" >
         </activity>
+        <activity
+            android:name=".WsParamsActivity"
+            android:label="@string/title_activity_ws_params" >
+        </activity>
     </application>
 
 </manifest>
