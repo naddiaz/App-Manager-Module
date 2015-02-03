@@ -4,5 +4,14 @@
     <string name="app_name">ManagerModule</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="btn_get_date">Get Date</string>
+    <string name="txtV_Date">Date Details:</string>
+    <string name="year">Year</string>
+    <string name="month">Month</string>
+    <string name="day">Day</string>
+    <string name="hour">Hour</string>
+    <string name="minutes">Minutes</string>
+    <string name="seconds">Seconds</string>
+    <string name="spacing">______</string>
 
 </resources>

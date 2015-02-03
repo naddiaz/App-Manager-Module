@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.Button;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -60,6 +61,9 @@ public class MainActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            Button btn_get_date = (Button) rootView.findViewById(R.id.btn_get_date);
+
+            btn_get_date.setOnClickListener(new OnClick_ws_date(rootView));
             return rootView;
         }
     }
