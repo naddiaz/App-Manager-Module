@@ -43,12 +43,8 @@ public class WsNoParamsActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_ws_no_params) {
-            return true;
-        }
-        if (id == R.id.action_ws_params) {
-            Intent intent = new Intent(this,WsParamsActivity.class);
-            startActivity(intent);
+        if (id == R.id.action_cancel) {
+            super.onBackPressed();
             return true;
         }
 

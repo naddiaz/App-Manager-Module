@@ -22,5 +22,6 @@
     <string name="days_between">Days Between</string>
     <string name="day_week">Day of Week</string>
     <string name="check_day">Check Day</string>
+    <string name="action_cancel">Cancel</string>
 
 </resources>

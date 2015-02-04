@@ -41,16 +41,7 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_ws_no_params) {
-            Intent intent = new Intent(this,WsNoParamsActivity.class);
-            startActivity(intent);
-            return true;
-        }
-        if (id == R.id.action_ws_params) {
-            Intent intent = new Intent(this,WsParamsActivity.class);
-            startActivity(intent);
-            return true;
-        }
+
         return super.onOptionsItemSelected(item);
     }
 

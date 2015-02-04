@@ -3,9 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.naddiaz.tfg.managermodule.WsParamsActivity">
 
-    <item android:id="@+id/action_ws_no_params" android:title="@string/action_ws_no_params"
-        android:orderInCategory="100" app:showAsAction="never" />
 
-    <item android:id="@+id/action_ws_params" android:title="@string/action_ws_params"
-        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_cancel" android:title="@string/action_cancel"
+        android:orderInCategory="100" app:showAsAction="ifRoom" android:icon="@drawable/ic_action_cancel"/>
 </menu>
