@@ -1,15 +1,18 @@
 package com.naddiaz.tfg.managermodule;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.Button;
 
 
 public class WsParamsActivity extends ActionBarActivity {
@@ -41,7 +44,12 @@ public class WsParamsActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_ws_no_params) {
+            Intent intent = new Intent(this,WsNoParamsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.action_ws_params) {
             return true;
         }
 
@@ -60,6 +68,8 @@ public class WsParamsActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_ws_params, container, false);
+            Button btn_check_date = (Button) rootView.findViewById(R.id.btn_check_date);
+            btn_check_date.setOnClickListener(new OnClick_ws_check_date(rootView));
             return rootView;
         }
     }

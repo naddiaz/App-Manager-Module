@@ -10,7 +10,6 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,6 +33,7 @@ public class GetWS  extends AsyncTask<String, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(String... params) {
+
         try{
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpGet httpGet = new HttpGet(url);
@@ -52,7 +52,6 @@ public class GetWS  extends AsyncTask<String, Void, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean result){
-
         for (int i = 0; i < params.length; i++) {
             int id = rootView.getResources().getIdentifier("txt_"+params[i],"id",rootView.getContext().getPackageName());
             TextView txt = (TextView) rootView.findViewById(id);

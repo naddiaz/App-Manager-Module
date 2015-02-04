@@ -45,12 +45,6 @@
         android:layout_below="@+id/textView1"
         android:layout_alignParentStart="true" />
 
-    <GridLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView3" >
 
         <Button
             android:layout_width="wrap_content"
@@ -58,13 +52,16 @@
             android:text="@string/action_ws_no_params"
             android:id="@+id/btn_ws_no_params"
             android:layout_row="0"
-            android:layout_column="0"/>
+            android:layout_column="0"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/action_ws_params"
             android:id="@+id/btn_ws_params"
             android:layout_row="0"
-            android:layout_column="1"/>
-    </GridLayout>
+            android:layout_column="1"
+            android:layout_alignParentBottom="true"
+            android:layout_alignEnd="@+id/textView3" />
 </RelativeLayout>

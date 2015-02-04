@@ -21,6 +21,7 @@ public class OnClick_ws_date implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         GetWS ws = new GetWS(rootView,url);
+        Log.d("TRACE",url);
         ws.execute("year","month","day","hour","minute","second");
     }
 

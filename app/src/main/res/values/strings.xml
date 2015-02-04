@@ -19,8 +19,8 @@
     <string name="title_activity_wsparams">MM: Params</string>
     <string name="main_description">This is a Simple Web Service to get Date data</string>
     <string name="title_activity_ws_params">WsParamsActivity</string>
-    <string name="daysbetween">Days Between</string>
-    <string name="dayweek">Day of Week</string>
-    <string name="checkday">Check Day</string>
+    <string name="days_between">Days Between</string>
+    <string name="day_week">Day of Week</string>
+    <string name="check_day">Check Day</string>
 
 </resources>

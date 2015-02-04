@@ -20,10 +20,9 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/editText"
+            android:id="@+id/edtxt_day"
             android:layout_row="0"
             android:layout_column="0"
-            android:layout_columnSpan="1"
             android:hint="Day"/>
 
         <EditText
@@ -31,10 +30,9 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/editText1"
+            android:id="@+id/edtxt_month"
             android:layout_row="1"
             android:layout_column="0"
-            android:layout_columnSpan="1"
             android:hint="Month"/>
 
         <EditText
@@ -42,61 +40,57 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/editText2"
+            android:id="@+id/edtxt_year"
             android:layout_row="2"
             android:layout_column="0"
-            android:layout_columnSpan="1"
             android:hint="Year (yyyy)"/>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="@string/days_between"
+            android:layout_row="3"
+            android:layout_column="0"
+            android:layout_columnSpan="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="@string/day_week"
+            android:layout_row="4"
+            android:layout_column="0"/>
+
+
+        <TextView
+            android:id="@+id/txt_day_week"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="@string/spacing"
+            android:layout_row="4"
+            android:layout_column="1"/>
 
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/checkday"
-            android:id="@+id/button"
-            android:layout_row="2"
+            android:text="@string/check_day"
+            android:id="@+id/btn_check_date"
+            android:layout_row="6"
+            android:layout_column="0"/>
+
+        <TextView
+            android:id="@+id/txt_diff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="@string/spacing"
+            android:layout_row="3"
             android:layout_column="1" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/daysbetween"
-            android:layout_row="3"
-            android:layout_column="0"
-            android:layout_columnSpan="1"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/dayweek"
-            android:layout_row="3"
-            android:layout_column="1"
-            android:layout_columnSpan="1"/>
-
-
-        <TextView
-            android:id="@+id/txt_year"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/spacing"
-            android:layout_row="4"
-            android:layout_column="0"
-            android:layout_columnSpan="1"/>
-
-        <TextView
-            android:id="@+id/txt_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/spacing"
-            android:layout_row="4"
-            android:layout_column="1"
-            android:layout_columnSpan="1"/>
-
-
     </GridLayout>
 
 </RelativeLayout>
