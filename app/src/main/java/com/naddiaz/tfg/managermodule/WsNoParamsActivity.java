@@ -65,7 +65,7 @@ public class WsNoParamsActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_ws_no_params, container, false);
             Button btn_get_date = (Button) rootView.findViewById(R.id.btn_get_date);
 
-            btn_get_date.setOnClickListener(new OnClick_ws_date(rootView));
+            btn_get_date.setOnClickListener(new VolleyWS(rootView));
             return rootView;
         }
     }
