@@ -1,6 +1,7 @@
 package com.naddiaz.tfg.managermodule;
 
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -58,33 +59,37 @@ public class PushLocation extends ActionBarActivity {
      */
     public static class PlaceholderFragment extends Fragment {
 
+        private View rootView;
+        private Handler mHandler;
+
         public PlaceholderFragment() {
         }
+
+        Runnable mStatusChecker = new Runnable() {
+            @Override
+            public void run() {
+                SendSimulateLocation send = new SendSimulateLocation(rootView);
+                send.postLocation();
+                mHandler.postDelayed(mStatusChecker, 5000);
+            }
+        };
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            final View rootView = inflater.inflate(R.layout.fragment_push_location, container, false);
+           mHandler = new Handler();
+           rootView = inflater.inflate(R.layout.fragment_push_location, container, false);
+
             Switch sw_location = (Switch) rootView.findViewById(R.id.swLocation);
             sw_location.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-                public void timer(final SendSimulateLocation send){
-                    Timer timer = new Timer();
-                    timer.scheduleAtFixedRate(
-                        new java.util.TimerTask() {
-                            @Override
-                            public void run() {
-                                send.postLocation();
-                            }
-                        },
-                        5000, 60000
-                    );
-                }
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(isChecked){
-                        SendSimulateLocation send = new SendSimulateLocation(rootView);
-                        timer(send);
+                        mStatusChecker.run();
+                    }
+                    else{
+                        mHandler.removeCallbacks(mStatusChecker);
                     }
                 }
             });
