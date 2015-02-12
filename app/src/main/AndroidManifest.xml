@@ -26,6 +26,10 @@
             android:name=".WsParamsActivity"
             android:label="@string/title_activity_ws_params" >
         </activity>
+        <activity
+            android:name=".PushLocation"
+            android:label="@string/title_activity_push_location" >
+        </activity>
     </application>
 
 </manifest>

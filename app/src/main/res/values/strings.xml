@@ -23,5 +23,6 @@
     <string name="day_week">Day of Week</string>
     <string name="check_day">Check Day</string>
     <string name="action_cancel">Cancel</string>
+    <string name="title_activity_push_location">PushLocation</string>
 
 </resources>
