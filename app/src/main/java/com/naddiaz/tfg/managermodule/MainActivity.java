@@ -62,7 +62,7 @@ public class MainActivity extends ActionBarActivity {
             btn_ws_no_params.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(),WsNoParamsActivity.class);
+                    Intent intent = new Intent(getActivity(),PushLocation.class);
                     startActivity(intent);
                 }
             });
