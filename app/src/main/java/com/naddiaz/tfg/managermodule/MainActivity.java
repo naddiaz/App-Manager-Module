@@ -58,20 +58,11 @@ public class MainActivity extends ActionBarActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-            Button btn_ws_no_params = (Button) rootView.findViewById(R.id.btn_ws_no_params);
+            Button btn_ws_no_params = (Button) rootView.findViewById(R.id.push);
             btn_ws_no_params.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(),PushLocation.class);
-                    startActivity(intent);
-                }
-            });
-
-            Button btn_ws_params = (Button) rootView.findViewById(R.id.btn_ws_params);
-            btn_ws_params.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(),WsParamsActivity.class);
                     startActivity(intent);
                 }
             });

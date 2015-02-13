@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 import android.widget.CompoundButton;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 
 import java.util.Timer;
@@ -61,6 +62,8 @@ public class PushLocation extends ActionBarActivity {
 
         private View rootView;
         private Handler mHandler;
+        private ProgressBar progressBar;
+        private int mProgressStatus = 0;
 
         public PlaceholderFragment() {
         }
@@ -71,8 +74,34 @@ public class PushLocation extends ActionBarActivity {
                 SendSimulateLocation send = new SendSimulateLocation(rootView);
                 send.postLocation();
                 mHandler.postDelayed(mStatusChecker, 5000);
+                mHandler.post(new Runnable() {
+                    public void run() {
+                        mProgressStatus = 0;
+                        new CountDownTimer(5500, 500) {
+
+                            public void onTick(long millisUntilFinished) {
+                                mProgressStatus += 10;
+                                // Update the progress bar
+                                mHandler.post(new Runnable() {
+                                    public void run() {
+                                        progressBar.setProgress(mProgressStatus);
+                                    }
+                                });
+                            }
+
+                            public void onFinish() {
+
+                            }
+                        }.start();
+                    }
+                });
             }
         };
+
+        private int doWork() {
+
+            return 20;
+        }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,6 +115,7 @@ public class PushLocation extends ActionBarActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(isChecked){
+                        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
                         mStatusChecker.run();
                     }
                     else{

@@ -10,9 +10,33 @@
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Location"
+        android:text="Localización"
         android:id="@+id/swLocation"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="20dp"
+        android:textOn="Enviando"
+        android:textOff="Inactiva"
+        android:showText="true"
+        android:splitTrack="false"
+        android:singleLine="false" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Tiempo de espera"
+        android:id="@+id/textView2"
+        android:layout_above="@+id/progressBar"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

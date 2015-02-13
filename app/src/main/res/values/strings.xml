@@ -24,5 +24,6 @@
     <string name="check_day">Check Day</string>
     <string name="action_cancel">Cancel</string>
     <string name="title_activity_push_location">PushLocation</string>
+    <string name="push">Push Location</string>
 
 </resources>
