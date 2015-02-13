@@ -2,6 +2,7 @@ package com.naddiaz.tfg.managermodule;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -24,9 +25,15 @@ import java.util.Map;
 public class SendSimulateLocation {
 
     private View view;
+    private String id_person = "1";
+    private String id_beacon = "1";
 
     public SendSimulateLocation(View rootView){
         this.view = rootView;
+        EditText ed_person = (EditText) view.findViewById(R.id.idPerson);
+        id_person = ed_person.getText().toString();
+        EditText ed_beacon = (EditText) view.findViewById(R.id.idBeacon);
+        id_beacon = ed_beacon.getText().toString();
     }
 
     public void postLocation(){
@@ -55,8 +62,8 @@ public class SendSimulateLocation {
             protected Map<String, String> getParams()
             {
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("id_person", "1");
-                params.put("id_beacon", "1");
+                params.put("id_person", id_person);
+                params.put("id_beacon", id_beacon);
 
                 return params;
             }
