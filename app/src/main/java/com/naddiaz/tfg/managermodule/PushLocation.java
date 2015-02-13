@@ -98,11 +98,6 @@ public class PushLocation extends ActionBarActivity {
             }
         };
 
-        private int doWork() {
-
-            return 20;
-        }
-
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
