@@ -71,16 +71,19 @@ public class CheckUserListener implements View.OnClickListener {
         builder
                 .setSmallIcon(R.drawable.bletaskermini)
                 .setContentTitle("BLE Tasker")
-                .setContentText("Welcome <WORKER USERNAME>")
+                .setContentText("Reduced")
                 .setOngoing(true)
-                .addAction(R.drawable.ic_action_accept,"Open",openActivity)
-                .addAction(R.drawable.ic_action_overflow,"View Tasks",null);
+                .addAction(R.drawable.ic_action_accept,"Abrir",openActivity)
+                .addAction(R.drawable.ic_action_overflow, "Ver Tareas", null);
 
-        return builder.build();
+        return new Notification.BigTextStyle(builder)
+                .setBigContentTitle("BLE Tasker")
+                .bigText("Puedes acceder a otras opciones de BLE Tasker o ver las tareas pendientes")
+                .build();
     }
 
     public boolean setUserPreferences(String id){
-        SharedPreferences prefs = ctx.getSharedPreferences("bleTaskerPreferences", Context.MODE_PRIVATE);
+        SharedPreferences prefs = ctx.getSharedPreferences("bleTaskerPreferences", ctx.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("prefSave", true);
         editor.putString("IDuser", id);

@@ -2,10 +2,13 @@ package com.naddiaz.tfg.bletasker.widget;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +17,7 @@ import android.view.ViewGroup;
 import android.os.Build;
 
 import com.naddiaz.tfg.bletasker.R;
+import com.naddiaz.tfg.bletasker.services.BeaconIntentService;
 
 public class HomeActivity extends ActionBarActivity {
 
@@ -32,6 +36,13 @@ public class HomeActivity extends ActionBarActivity {
 
 
     @Override
+    protected void onPause(){
+        super.onPause();
+        Log.i("TAG", "Pause");
+        LoginActivity.login.finish();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_home, menu);
@@ -47,9 +58,21 @@ public class HomeActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_close) {
+            //Eliminar el icono de la bandeja de notificaciones
             String ns = Context.NOTIFICATION_SERVICE;
             NotificationManager nMgr = (NotificationManager) getSystemService(ns);
             nMgr.cancel(PENDING_DEFAULT_NOTIFICATION);
+
+            //Detener el servicio BeaconIntentService
+            Intent beaconIntent = new Intent(getBaseContext(), BeaconIntentService.class);
+            stopService(beaconIntent);
+
+
+            SharedPreferences prefs = getSharedPreferences("bleTaskerPreferences", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.clear();
+            editor.commit();
+
             finish();
             return true;
         }
