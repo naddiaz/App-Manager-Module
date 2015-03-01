@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.Button;
+import android.widget.EditText;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -37,6 +39,14 @@ public class LoginActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_login, container, false);
+
+            //Crear una nueva actividad tras el login
+
+            EditText ed_user = (EditText) rootView.findViewById(R.id.ed_user);
+            EditText ed_password = (EditText) rootView.findViewById(R.id.ed_password);
+            Button btn_login = (Button) rootView.findViewById(R.id.btn_login);
+            btn_login.setOnClickListener(new CheckUserListener(ed_user,ed_password));
+
             return rootView;
         }
     }
