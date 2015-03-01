@@ -9,5 +9,7 @@
     <string name="btn_login_text">Entrar</string>
     <string name="ed_password_hint">Contraseña</string>
     <string name="ed_userid_hint">ID usuario</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="action_close">Close</string>
 
 </resources>
