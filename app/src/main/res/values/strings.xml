@@ -4,5 +4,10 @@
     <string name="app_name">BleTasker</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="appTitle">BLE Tasker</string>
+    <string name="altImageLogo">BLE Tasker Logo</string>
+    <string name="btn_login_text">Entrar</string>
+    <string name="ed_password_hint">Contraseña</string>
+    <string name="ed_userid_hint">ID usuario</string>
 
 </resources>
