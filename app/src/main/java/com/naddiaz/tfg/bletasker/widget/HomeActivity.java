@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,10 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 
 import com.naddiaz.tfg.bletasker.R;
-import com.naddiaz.tfg.bletasker.services.BeaconIntentService;
+import com.naddiaz.tfg.bletasker.services.BeaconService;
 
 public class HomeActivity extends ActionBarActivity {
 
@@ -32,6 +30,10 @@ public class HomeActivity extends ActionBarActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+
+        //Creamos un intent para el BeaconIntentService
+        Intent beaconIntent = new Intent(HomeActivity.this, BeaconService.class);
+        startService(beaconIntent);
     }
 
 
@@ -64,9 +66,8 @@ public class HomeActivity extends ActionBarActivity {
             nMgr.cancel(PENDING_DEFAULT_NOTIFICATION);
 
             //Detener el servicio BeaconIntentService
-            Intent beaconIntent = new Intent(getBaseContext(), BeaconIntentService.class);
+            Intent beaconIntent = new Intent(HomeActivity.this, BeaconService.class);
             stopService(beaconIntent);
-
 
             SharedPreferences prefs = getSharedPreferences("bleTaskerPreferences", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();

@@ -3,11 +3,9 @@ package com.naddiaz.tfg.bletasker.widget;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +18,16 @@ import com.naddiaz.tfg.bletasker.R;
 
 public class LoginActivity extends ActionBarActivity {
 
-    Boolean keep;
     public static ActionBarActivity login;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         login = this;
+
         SharedPreferences prefs = getSharedPreferences("bleTaskerPreferences", MODE_PRIVATE);
         Boolean prefSave = prefs.getBoolean("prefSave", false);
-        Log.i("TAG",prefSave.toString());
+
         if(prefSave){
             Intent homeActivityIntent = new Intent(getBaseContext(), HomeActivity.class);
             startActivity(homeActivityIntent);
