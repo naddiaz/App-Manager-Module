@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/BleTasker.iml" filepath="$PROJECT_DIR$/BleTasker.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/ManagerModule.iml" filepath="$PROJECT_DIR$/ManagerModule.iml" />
+>>>>>>> f2db73f061bae347592d15564d8e7de32594852d
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

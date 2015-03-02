@@ -2,6 +2,7 @@
   <profile version="1.0" is_locked="false">
     <option name="myName" value="Project Default" />
     <option name="myLocal" value="false" />
+<<<<<<< HEAD
     <inspection_tool class="AndroidLintRtlHardcoded" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="AndroidLintUselessParent" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="AndroidLintValidFragment" enabled="false" level="ERROR" enabled_by_default="false" />
@@ -9,5 +10,8 @@
       <option name="loggerClassName" value="org.apache.log4j.Logger,org.slf4j.LoggerFactory,org.apache.commons.logging.LogFactory,java.util.logging.Logger" />
       <option name="loggerFactoryMethodName" value="getLogger,getLogger,getLog,getLogger" />
     </inspection_tool>
+=======
+    <inspection_tool class="AndroidLintValidFragment" enabled="false" level="ERROR" enabled_by_default="false" />
+>>>>>>> f2db73f061bae347592d15564d8e7de32594852d
   </profile>
 </component>
