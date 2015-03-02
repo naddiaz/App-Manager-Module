@@ -20,6 +20,7 @@ import com.naddiaz.tfg.bletasker.services.BeaconService;
 public class HomeActivity extends ActionBarActivity {
 
     private static final int PENDING_DEFAULT_NOTIFICATION = 1;
+    //private Intent beaconIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -45,13 +45,14 @@ public class BeaconService extends Service {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         scanResult = new HashMap<>();
-        scanLeDevice(true);
+        scanLeDevice(true,false);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        scanLeDevice(false);
+        Log.i(TAG,"on Destroy");
+        scanLeDevice(false,true);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class BeaconService extends Service {
     private Runnable mScan = new Runnable() {
         @Override
         public void run() {
-            scanLeDevice(false);
+            scanLeDevice(false,false);
         }
     };
 
@@ -78,15 +79,15 @@ public class BeaconService extends Service {
                 }.run();
             }
         }
-        scanLeDevice(true);
+        scanLeDevice(true,false);
     }
 
     @SuppressWarnings("deprecation")
-    private void scanLeDevice(final boolean enable) {
+    private void scanLeDevice(final boolean enable, boolean kill) {
         if (enable) {
             mHandler.postDelayed(mScan, mScanTime);
             mBluetoothAdapter.startLeScan(mLeScanCallback);
-        } else {
+        } else if(!kill){
             // Cancel the scan timeout callback if still active or else it may fire later.
             mHandler.removeCallbacks(mScan);
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
@@ -100,6 +101,11 @@ public class BeaconService extends Service {
                     sender();
                 }
             }.start();
+        }
+        else{
+            // Cancel the scan timeout callback if still active or else it may fire later.
+            mHandler.removeCallbacks(mScan);
+            mBluetoothAdapter.stopLeScan(mLeScanCallback);
         }
     }
 
