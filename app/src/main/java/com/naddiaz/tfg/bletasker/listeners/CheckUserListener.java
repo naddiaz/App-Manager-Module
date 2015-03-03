@@ -53,7 +53,7 @@ public class CheckUserListener implements View.OnClickListener {
                 Intent intent = new Intent();
                 intent.setClass(ctx,HomeActivity.class);
                 //Creamos el PendingIntent
-                openActivity = PendingIntent.getActivity(ctx, 0, intent, 0);
+                openActivity = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                 Notification.Builder builder = new Notification.Builder(ctx);
                 NotificationManager notificationManager = (NotificationManager)ctx.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -72,14 +72,14 @@ public class CheckUserListener implements View.OnClickListener {
         builder
                 .setSmallIcon(R.drawable.bletaskermini)
                 .setContentTitle("BLE Tasker")
-                .setContentText("Reduced")
+                .setContentText("Se está detectando la localización por Bluetooth")
                 .setOngoing(true)
-                .addAction(R.drawable.ic_action_accept,"Abrir",openActivity)
-                .addAction(R.drawable.ic_action_overflow, "Ver Tareas", null);
+                .addAction(R.drawable.ic_action_overflow, "Ver Tareas", null)
+                .setContentIntent(openActivity);
 
         return new Notification.BigTextStyle(builder)
                 .setBigContentTitle("BLE Tasker")
-                .bigText("Puedes acceder a otras opciones de BLE Tasker o ver las tareas pendientes")
+                .bigText("Puedes acceder a las opciones de BLE Tasker o ver las tareas pendientes")
                 .build();
     }
 
