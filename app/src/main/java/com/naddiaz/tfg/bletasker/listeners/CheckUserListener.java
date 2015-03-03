@@ -14,6 +14,7 @@ import android.widget.EditText;
 
 import com.naddiaz.tfg.bletasker.R;
 import com.naddiaz.tfg.bletasker.widget.HomeActivity;
+import com.naddiaz.tfg.bletasker.widget.HomeDrawerActivity;
 
 /**
  * Created by nad on 1/03/15.
@@ -51,7 +52,7 @@ public class CheckUserListener implements View.OnClickListener {
 
                 //Creamos un intent para el PendingIntent
                 Intent intent = new Intent();
-                intent.setClass(ctx,HomeActivity.class);
+                intent.setClass(ctx,HomeDrawerActivity.class);
                 //Creamos el PendingIntent
                 openActivity = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -59,8 +60,8 @@ public class CheckUserListener implements View.OnClickListener {
                 NotificationManager notificationManager = (NotificationManager)ctx.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.notify(PENDING_DEFAULT_NOTIFICATION,getDefaultNotification(builder));
 
-                //Creamos un intent para el HomeActivity
-                Intent homeActivityIntent = new Intent(parentActivity, HomeActivity.class);
+                //Creamos un intent para el HomeDrawerActivity
+                Intent homeActivityIntent = new Intent(parentActivity, HomeDrawerActivity.class);
                 ctx.startActivity(homeActivityIntent);
             }
         }

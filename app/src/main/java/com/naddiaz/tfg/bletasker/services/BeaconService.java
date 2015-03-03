@@ -1,22 +1,14 @@
 package com.naddiaz.tfg.bletasker.services;
 
-import android.app.IntentService;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.util.Log;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.naddiaz.tfg.bletasker.utils.ScanRecord;
 import com.naddiaz.tfg.bletasker.utils.ScanResult;
@@ -38,6 +30,7 @@ public class BeaconService extends Service {
     private BluetoothAdapter mBluetoothAdapter;
     private long mScanTime = 10000;
     private HashMap<BluetoothDevice, ScanResult> scanResult;
+    private CountDownTimer countDown;
 
     @Override
     public void onCreate() {
@@ -53,6 +46,7 @@ public class BeaconService extends Service {
         super.onDestroy();
         Log.i(TAG,"on Destroy");
         scanLeDevice(false,true);
+        countDown.cancel();
     }
 
     @Override
@@ -91,7 +85,7 @@ public class BeaconService extends Service {
             // Cancel the scan timeout callback if still active or else it may fire later.
             mHandler.removeCallbacks(mScan);
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
-            new CountDownTimer(20000, 10000) {
+            countDown = new CountDownTimer(20000, 10000) {
 
                 public void onTick(long millisUntilFinished) {
                     Log.i(TAG, "WAIT: " + millisUntilFinished);
@@ -100,7 +94,8 @@ public class BeaconService extends Service {
                 public void onFinish() {
                     sender();
                 }
-            }.start();
+            };
+            countDown.start();
         }
         else{
             // Cancel the scan timeout callback if still active or else it may fire later.

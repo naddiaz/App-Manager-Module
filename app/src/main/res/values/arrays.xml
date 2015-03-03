@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="DrawerHomeItems">
+        <item>Tareas Entrantes</item>
+        <item>Tareas Pausadas</item>
+        <item>Mensajes Personales</item>
+        <item>Salir y Cerrar</item>
+    </string-array>
+</resources>

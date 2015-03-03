@@ -25,11 +25,14 @@ public class LoginActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         login = this;
 
+        //Hide ActionBar
+        getSupportActionBar().hide();
+
         SharedPreferences prefs = getSharedPreferences("bleTaskerPreferences", MODE_PRIVATE);
         Boolean prefSave = prefs.getBoolean("prefSave", false);
 
         if(prefSave){
-            Intent homeActivityIntent = new Intent(getBaseContext(), HomeActivity.class);
+            Intent homeActivityIntent = new Intent(getBaseContext(), HomeDrawerActivity.class);
             startActivity(homeActivityIntent);
         }
         else {
