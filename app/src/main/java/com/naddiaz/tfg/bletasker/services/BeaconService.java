@@ -85,7 +85,7 @@ public class BeaconService extends Service {
             // Cancel the scan timeout callback if still active or else it may fire later.
             mHandler.removeCallbacks(mScan);
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
-            countDown = new CountDownTimer(20000, 10000) {
+            countDown = new CountDownTimer(5000, 1000) {
 
                 public void onTick(long millisUntilFinished) {
                     Log.i(TAG, "WAIT: " + millisUntilFinished);

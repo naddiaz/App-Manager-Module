@@ -50,31 +50,37 @@ MERGED from com.android.support:support-v4:21.0.3:16:5
 activity#com.naddiaz.tfg.bletasker.widget.LoginActivity
 ADDED from AndroidManifest.xml:22:9
 	android:label
-		ADDED from AndroidManifest.xml:25:13
+		ADDED from AndroidManifest.xml:24:13
 	android:name
 		ADDED from AndroidManifest.xml:23:13
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:26:13
+ADDED from AndroidManifest.xml:25:13
 action#android.intent.action.MAIN
-ADDED from AndroidManifest.xml:27:17
+ADDED from AndroidManifest.xml:26:17
 	android:name
-		ADDED from AndroidManifest.xml:27:25
+		ADDED from AndroidManifest.xml:26:25
 category#android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:29:17
+ADDED from AndroidManifest.xml:28:17
 	android:name
-		ADDED from AndroidManifest.xml:29:27
+		ADDED from AndroidManifest.xml:28:27
 service#com.naddiaz.tfg.bletasker.services.BeaconService
-ADDED from AndroidManifest.xml:34:9
+ADDED from AndroidManifest.xml:33:9
 	android:exported
-		ADDED from AndroidManifest.xml:36:13
-	android:name
 		ADDED from AndroidManifest.xml:35:13
-activity#com.naddiaz.tfg.bletasker.widget.HomeActivity
-ADDED from AndroidManifest.xml:38:9
-	android:label
-		ADDED from AndroidManifest.xml:40:13
 	android:name
+		ADDED from AndroidManifest.xml:34:13
+activity#com.naddiaz.tfg.bletasker.widget.HomeActivity
+ADDED from AndroidManifest.xml:37:9
+	android:label
 		ADDED from AndroidManifest.xml:39:13
+	android:name
+		ADDED from AndroidManifest.xml:38:13
+activity#com.naddiaz.tfg.bletasker.widget.HomeDrawerActivity
+ADDED from AndroidManifest.xml:41:9
+	android:label
+		ADDED from AndroidManifest.xml:43:13
+	android:name
+		ADDED from AndroidManifest.xml:42:13
 uses-sdk
 INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
 MERGED from com.android.support:appcompat-v7:21.0.3:15:5
