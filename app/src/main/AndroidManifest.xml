@@ -20,7 +20,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".widget.LoginActivity"
+            android:name=".widget.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,6 +41,10 @@
         <activity
             android:name=".widget.HomeDrawerActivity"
             android:label="@string/title_activity_home_drawer" >
+        </activity>
+        <activity
+            android:name=".widget.LoginActivity"
+            android:label="@string/title_activity_main" >
         </activity>
     </application>
 

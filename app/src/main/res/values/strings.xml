@@ -11,8 +11,6 @@
     <string name="ed_userid_hint">ID usuario</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="action_close">Close</string>
-
-
     <string name="title_activity_home_drawer">HomeDrawerActivity</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
@@ -20,9 +18,25 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
-
-
     <string name="enter_tasks">Tareas Entrantes</string>
     <string name="pause_tasks">Tareas Pausadas</string>
     <string name="message">Mensajes Personales</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string-array name="Tags">
+        <item>Tareas</item>
+        <item>Activas</item>
+        <item>Pendientes</item>
+        <item>Pausadas</item>
+        <item>Canceladas</item>
+        <item>Completas</item>
+        <item>Opciones</item>
+        <item>Mensajes</item>
+        <item>Historial</item>
+        <item>Cerrar Sesión</item>
+    </string-array>
+
+    <string name="drawer_open">Abrir navigation drawer</string>
+    <string name="drawer_close">Cerrar navigation drawer</string>
+    <string name="headlines">Encabezados de</string>
 </resources>
