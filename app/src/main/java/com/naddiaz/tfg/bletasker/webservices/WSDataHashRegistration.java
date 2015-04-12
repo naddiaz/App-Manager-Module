@@ -64,7 +64,9 @@ public class WSDataHashRegistration {
                     Toast.makeText(ctx,ctx.getString(R.string.ws_error_hash_false),Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    new UserPrefecences(ctx, response).registerGcm().savePreferences();
+                    UserPrefecences userPrefecences = new UserPrefecences(ctx, response);
+                    userPrefecences.registerGcm().savePreferences();
+                    new WSLoadWorks(ctx,userPrefecences.getHash()).getWorks();
                 }
             }
         }, new Response.ErrorListener() {

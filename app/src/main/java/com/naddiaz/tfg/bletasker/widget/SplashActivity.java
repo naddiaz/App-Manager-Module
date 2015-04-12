@@ -23,6 +23,7 @@ import com.naddiaz.tfg.bletasker.R;
 import com.naddiaz.tfg.bletasker.listeners.DataHashRegisterListener;
 import com.naddiaz.tfg.bletasker.utils.UserPrefecences;
 import com.naddiaz.tfg.bletasker.webservices.WSDataHashRegistration;
+import com.naddiaz.tfg.bletasker.webservices.WSLoadWorks;
 
 public class SplashActivity extends ActionBarActivity {
 
@@ -46,6 +47,7 @@ public class SplashActivity extends ActionBarActivity {
                     .add(R.id.container, new PreLoadingFragment())
                     .commit();
             new WSDataHashRegistration(this,userPrefecences.getHash()).verifySessionHash();
+            new WSLoadWorks(this,userPrefecences.getHash()).getWorks();
         }
         else if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
