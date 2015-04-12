@@ -5,4 +5,10 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
+
+            <ListView
+                android:id="@+id/listview_tasks"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawSelectorOnTop="false" />
 </com.heinrichreimersoftware.materialdrawer.DrawerFrameLayout>

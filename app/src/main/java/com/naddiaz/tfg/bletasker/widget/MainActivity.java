@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -19,10 +20,15 @@ import com.heinrichreimersoftware.materialdrawer.DrawerFrameLayout;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
 import com.naddiaz.tfg.bletasker.R;
+import com.naddiaz.tfg.bletasker.adapters.TaskListViewAdapter;
+import com.naddiaz.tfg.bletasker.database.Work;
+import com.naddiaz.tfg.bletasker.database.WorksDbHelper;
 import com.naddiaz.tfg.bletasker.dialogs.LogoutDialog;
 import com.naddiaz.tfg.bletasker.dialogs.UnlinkDialog;
 import com.naddiaz.tfg.bletasker.fragments.HomeFragment;
 import com.naddiaz.tfg.bletasker.utils.UserPrefecences;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -31,6 +37,7 @@ public class MainActivity extends ActionBarActivity {
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     private CharSequence itemTitle;
+    private String actualView = Work.STATE_ACTIVE;
 
     DrawerFrameLayout drawer;
 
@@ -46,6 +53,7 @@ public class MainActivity extends ActionBarActivity {
     private final static String[] iconConfiguration = {"ic_action_logout","ic_action_unlink"};
     private final static String[] actionsConfiguration = {"logout","unlink"};
 
+    private WorksDbHelper worksDbHelper;
     Context context;
 
     UserPrefecences userPrefecences;
@@ -57,9 +65,11 @@ public class MainActivity extends ActionBarActivity {
         context = getApplicationContext();
         if (checkPlayServices()) {
             userPrefecences = new UserPrefecences(getApplication()).readPreferences();
+            worksDbHelper = new WorksDbHelper(context);
+            //worksDbHelper.clearWorks();
             createDrawerNavigation();
             if (savedInstanceState == null) {
-                selectItem(actionsTasks[0]);
+                selectItem(actualView);
                 setTitle(itemTitle);
             }
         }
@@ -186,20 +196,50 @@ public class MainActivity extends ActionBarActivity {
     private void selectItem(String action) {
         Log.i(TAG,"Action: " + action);
         switch (action){
-            case "active":
+            case Work.STATE_ACTIVE:
+                ArrayList<Work> works_active = worksDbHelper.getWorksByState(Work.STATE_ACTIVE);
+                ListView listView_active = (ListView) findViewById(R.id.listview_tasks);
+                TaskListViewAdapter taskListViewAdapter_active = new TaskListViewAdapter(context,works_active,Work.STATE_ACTIVE);
+                listView_active.setAdapter(taskListViewAdapter_active);
+                taskListViewAdapter_active.notifyDataSetChanged();
                 setTitle(tagTasks[1]);
+                actualView = Work.STATE_ACTIVE;
                 break;
-            case "pending":
+            case Work.STATE_PENDING:
+                ArrayList<Work> works_pending = worksDbHelper.getWorksByState(Work.STATE_PENDING);
+                ListView listView_pending = (ListView) findViewById(R.id.listview_tasks);
+                TaskListViewAdapter taskListViewAdapter_pending = new TaskListViewAdapter(context,works_pending,Work.STATE_PENDING);
+                listView_pending.setAdapter(taskListViewAdapter_pending);
+                taskListViewAdapter_pending.notifyDataSetChanged();
                 setTitle(tagTasks[2]);
+                actualView = Work.STATE_PENDING;
                 break;
-            case "pause":
+            case Work.STATE_PAUSE:
+                ArrayList<Work> works_pause  = worksDbHelper.getWorksByState(Work.STATE_PAUSE);
+                ListView listView_pause = (ListView) findViewById(R.id.listview_tasks);
+                TaskListViewAdapter taskListViewAdapter_pause = new TaskListViewAdapter(context,works_pause,Work.STATE_PAUSE);
+                listView_pause.setAdapter(taskListViewAdapter_pause);
+                taskListViewAdapter_pause.notifyDataSetChanged();
                 setTitle(tagTasks[3]);
+                actualView = Work.STATE_PAUSE;
                 break;
-            case "cancel":
+            case Work.STATE_CANCEL:
+                ArrayList<Work> works_cancel  = worksDbHelper.getWorksByState(Work.STATE_CANCEL);
+                ListView listView_cancel = (ListView) findViewById(R.id.listview_tasks);
+                TaskListViewAdapter taskListViewAdapter_cancel = new TaskListViewAdapter(context,works_cancel,Work.STATE_CANCEL);
+                listView_cancel.setAdapter(taskListViewAdapter_cancel);
+                taskListViewAdapter_cancel.notifyDataSetChanged();
                 setTitle(tagTasks[4]);
+                actualView = Work.STATE_CANCEL;
                 break;
-            case "complete":
+            case Work.STATE_COMPLETE:
+                ArrayList<Work> works_complete  = worksDbHelper.getWorksByState(Work.STATE_COMPLETE);
+                ListView listView_complete = (ListView) findViewById(R.id.listview_tasks);
+                TaskListViewAdapter taskListViewAdapter_complete = new TaskListViewAdapter(context,works_complete,Work.STATE_COMPLETE);
+                listView_complete.setAdapter(taskListViewAdapter_complete);
+                taskListViewAdapter_complete.notifyDataSetChanged();
                 setTitle(tagTasks[5]);
+                actualView = Work.STATE_COMPLETE;
                 break;
             case "message":
                 setTitle(tagOptions[1]);
@@ -255,6 +295,25 @@ public class MainActivity extends ActionBarActivity {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        // Saving variables
+        savedInstanceState.putString("actualView", actualView);
+
+        // Call at the end
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState){
+        // Call at the start
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // Retrieve variables
+        actualView = savedInstanceState.getString("actualView");
+        selectItem(actualView);
     }
 
 }

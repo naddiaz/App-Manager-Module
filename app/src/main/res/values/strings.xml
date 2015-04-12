@@ -57,8 +57,6 @@
     <string name="ws_url_gcm_registration">http://tfg.naddiaz.com/gcm/registration</string>
     <string name="ws_url_load_works">http://tfg.naddiaz.com/employee/get/tasks</string>
 
-
-
     <!--Error WS messages-->
     <string name="ws_error_timeout_hash">No se ha podido consultar el código, inténtelo de nuevo</string>
     <string name="ws_error_hash_false">Este código no es válido</string>
@@ -76,7 +74,7 @@
     <string name="dialog_unlink_message_description">Si desvincula el dispositivo, la próxima vez que quiera entrar en la aplicación le pedirá un nuevo código de acceso.</string>
     <string name="dialog_unlink_device">Desvincular</string>
 
-    <!--Generic messages-->
+    <!--Generic-->
     <string name="drawer_open">Abrir navigation drawer</string>
     <string name="drawer_close">Cerrar navigation drawer</string>
     <string name="headlines">Estás en </string>
@@ -89,4 +87,10 @@
     <string name="btn_data_hash_register">Verificar</string>
     <string name="txt_data_hash">Inserte el código proporcionado</string>
     <string name="keyboard_hash_register">LISTO</string>
+    <string name="item_action_run">Empezar</string>
+    <string name="item_action_pause">Pausar</string>
+    <string name="item_action_cancel">Cancelar</string>
+    <string name="item_action_finish">Finalizar</string>
+    <string name="txt_item_n_employees">Empleados asignados</string>
+    <string name="txt_item_priority">Prioridad</string>
 </resources>

@@ -86,5 +86,7 @@ public class Work {
         this.id_task = id_task;
     }
 
-
+    public String toString(){
+        return "[id_task = " + this.getId_task() + ", state = " + this.getState() + "]";
+    }
 }
