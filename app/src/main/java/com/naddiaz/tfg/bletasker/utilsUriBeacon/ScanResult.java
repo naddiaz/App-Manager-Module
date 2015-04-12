@@ -19,7 +19,7 @@
 //
 // Changes: Removed the reference to 'java.util.Objects'.
 
-package com.naddiaz.tfg.bletasker.utils;
+package com.naddiaz.tfg.bletasker.utilsUriBeacon;
 
 import android.bluetooth.BluetoothDevice;
 import android.os.Parcel;

@@ -17,7 +17,7 @@
 // THIS IS MODIFIED COPY OF THE "L" PLATFORM CLASS. BE CAREFUL ABOUT EDITS.
 // THIS CODE SHOULD FOLLOW ANDROID STYLE.
 
-package com.naddiaz.tfg.bletasker.utils;
+package com.naddiaz.tfg.bletasker.utilsUriBeacon;
 
 import android.os.ParcelUuid;
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.naddiaz.tfg.bletasker.utils;
+package com.naddiaz.tfg.bletasker.utilsUriBeacon;
 
 import android.support.annotation.Nullable;
 

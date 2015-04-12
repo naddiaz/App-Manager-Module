@@ -4,6 +4,7 @@
     <item name="blue" type="color">#FF166ECA</item>
     <item name="ligthGrey" type="color">#e3e3e3</item>
 
+    <color name="green_grey">#4c7f45</color>
     <!-- red -->
     <color name="md_red_50">#fde0dc</color>
     <color name="md_red_100">#f9bdbb</color>

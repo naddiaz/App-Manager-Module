@@ -1,143 +1,221 @@
 package com.naddiaz.tfg.bletasker.widget;
 
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.heinrichreimersoftware.materialdrawer.DrawerFrameLayout;
+import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
+import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
 import com.naddiaz.tfg.bletasker.R;
-import com.naddiaz.tfg.bletasker.adapters.DrawerItem;
-import com.naddiaz.tfg.bletasker.adapters.DrawerListAdapter;
+import com.naddiaz.tfg.bletasker.dialogs.LogoutDialog;
+import com.naddiaz.tfg.bletasker.dialogs.UnlinkDialog;
 import com.naddiaz.tfg.bletasker.fragments.HomeFragment;
-import com.naddiaz.tfg.bletasker.webservices.WSGcmRegistration;
+import com.naddiaz.tfg.bletasker.utils.UserPrefecences;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    private static final String TAG = "MAIN ACTIVITY";
-    public static final String EXTRA_MESSAGE = "message";
-    public static final String PROPERTY_REG_ID = "registration_id";
-    private static final String PROPERTY_APP_VERSION = "appVersion";
+    private static final String TAG = "MainActivity";
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
-    private DrawerLayout drawerLayout;
-    private ListView drawerList;
-    private ActionBarDrawerToggle drawerToggle;
-
-    private CharSequence activityTitle;
     private CharSequence itemTitle;
-    private String[] tagTitles;
 
-    GoogleCloudMessaging gcm;
-    AtomicInteger msgId = new AtomicInteger();
-    SharedPreferences prefs;
+    DrawerFrameLayout drawer;
+
+    private String[] tagTasks;
+    private final static String[] iconTasks = {"ic_action_new","ic_action_cancel","ic_action_pause","ic_action_discard","ic_action_accept"};
+    private final static String[] actionsTasks = {"active","pending","pause","cancel","complete"};
+
+    private String[] tagOptions;
+    private final static String[] iconOptions = {"ic_action_chat","ic_action_refresh"};
+    private final static String[] actionsOptions = {"message","history"};
+
+    private String[] tagConfiguration;
+    private final static String[] iconConfiguration = {"ic_action_logout","ic_action_unlink"};
+    private final static String[] actionsConfiguration = {"logout","unlink"};
+
     Context context;
 
-    String regid;
-
-    private String SENDER_ID = "581317354912";
+    UserPrefecences userPrefecences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer_main);
         context = getApplicationContext();
-
         if (checkPlayServices()) {
+            userPrefecences = new UserPrefecences(getApplication()).readPreferences();
             createDrawerNavigation();
             if (savedInstanceState == null) {
-                selectItem(1);
-            }
-            //deleteRegistrationId(context);
-            gcm = GoogleCloudMessaging.getInstance(this);
-            regid = getRegistrationId(context);
-
-            if (regid.isEmpty()) {
-                registerInBackground();
+                selectItem(actionsTasks[0]);
+                setTitle(itemTitle);
             }
         }
         else {
             Log.i(TAG, "No valid Google Play Services APK found.");
         }
+        Log.i(TAG,"onCreate");
     }
 
     @Override
     protected void onResume(){
         super.onResume();
         checkPlayServices();
+        setTitle(itemTitle);
+        Log.i(TAG,"onResume");
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        Log.i(TAG,"onPause");
+        SplashActivity.ctx.finish();
     }
 
     private void createDrawerNavigation(){
-        itemTitle = activityTitle = getTitle();
-        tagTitles = getResources().getStringArray(R.array.Tags);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerList = (ListView) findViewById(R.id.left_drawer);
+        itemTitle = getTitle();
+        tagTasks = getResources().getStringArray(R.array.tagTasks);
+        tagOptions = getResources().getStringArray(R.array.tagOptions);
+        tagConfiguration = getResources().getStringArray(R.array.tagConfiguration);
 
-        drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-
-        //Crear elementos de la lista
-        ArrayList<DrawerItem> items = new ArrayList<DrawerItem>();
-        items.add(new DrawerItem(tagTitles[0]));
-        items.add(new DrawerItem(tagTitles[1],R.drawable.ic_action_new));
-        items.add(new DrawerItem(tagTitles[2],R.drawable.ic_action_cancel));
-        items.add(new DrawerItem(tagTitles[3],R.drawable.ic_action_pause));
-        items.add(new DrawerItem(tagTitles[4],R.drawable.ic_action_discard));
-        items.add(new DrawerItem(tagTitles[5],R.drawable.ic_action_accept));
-        items.add(new DrawerItem(tagTitles[6]));
-        items.add(new DrawerItem(tagTitles[7],R.drawable.ic_action_chat));
-        items.add(new DrawerItem(tagTitles[8],R.drawable.ic_action_refresh));
-        items.add(new DrawerItem(tagTitles[9],R.drawable.ic_action_cancel));
-
-
-        drawerList.setAdapter(new DrawerListAdapter(this, items));
-        drawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.md_green_500));
 
-        // Crear ActionBarDrawerToggle para la apertura y cierre
-        drawerToggle = new ActionBarDrawerToggle(
-                this,
-                drawerLayout,
-                R.drawable.ic_drawer,
-                R.string.drawer_open,
-                R.string.drawer_close
-        ) {
-            public void onDrawerClosed(View view) {
-                getSupportActionBar().setTitle(itemTitle);
-            }
+        drawer = (DrawerFrameLayout) findViewById(R.id.drawer);
+        drawer.setProfile(
+                new DrawerProfile()
+                        .setAvatar(getResources().getDrawable(R.drawable.logo_full))
+                        .setBackground(getResources().getDrawable(R.color.green_grey))
+                        .setName(userPrefecences.getWorker_name().toUpperCase())
+                        .setDescription("ID empleado: " + userPrefecences.getId_person())
+                        .setOnProfileClickListener(new DrawerProfile.OnProfileClickListener() {
+                            @Override
+                            public void onClick(DrawerProfile drawerProfile) {
+                                Toast.makeText(MainActivity.this, "Clicked profile", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+        );
+        drawer.addItem(
+                new DrawerItem().setTextPrimary(tagTasks[0])
+        );
+        drawer.addDivider();
+        for(int i=1; i<tagTasks.length; i++) {
+            final int finalI = i;
+            drawer.addItem(
+                    new DrawerItem()
+                            .setTextPrimary(tagTasks[i])
+                            .setImage(getResources().getDrawable(convertStringToDrawable(iconTasks[i - 1])))
+                            .setOnItemClickListener(new DrawerItem.OnItemClickListener() {
+                                @Override
+                                public void onClick(DrawerItem drawerItem, int position, int i2) {
+                                    drawer.closeDrawer();
+                                    selectItem(actionsTasks[finalI-1]);
+                                }
+                            })
+            );
+        }
+        drawer.addItem(
+                new DrawerItem().setTextPrimary(tagOptions[0])
+        );
+        drawer.addDivider();
+        for(int i=1; i<tagOptions.length; i++) {
+            final int finalI = i;
+            drawer.addItem(
+                    new DrawerItem()
+                            .setTextPrimary(tagOptions[i])
+                            .setImage(getResources().getDrawable(convertStringToDrawable(iconOptions[i-1])))
+                            .setOnItemClickListener(new DrawerItem.OnItemClickListener() {
+                                @Override
+                                public void onClick(DrawerItem drawerItem, int position, int i2) {
+                                    drawer.closeDrawer();
+                                    selectItem(actionsOptions[finalI-1]);
+                                }
+                            })
+            );
+        }
+        //Configuration elements into the DrawerNavigation
+        drawer.addItem(
+                new DrawerItem().setTextPrimary(tagConfiguration[0])
+        );
+        drawer.addDivider();
+        for(int i=1; i<tagConfiguration.length; i++) {
+            final int finalI = i;
+            drawer.addItem(
+                    new DrawerItem()
+                            .setTextPrimary(tagConfiguration[i])
+                            .setImage(getResources().getDrawable(convertStringToDrawable(iconConfiguration[i-1])))
+                            .setOnItemClickListener(new DrawerItem.OnItemClickListener() {
+                                @Override
+                                public void onClick(DrawerItem drawerItem, int position, int i2) {
+                                    drawer.closeDrawer();
+                                    selectItem(actionsConfiguration[finalI-1]);
+                                }
+                            })
+            );
+        }
+    }
 
-            public void onDrawerOpened(View drawerView) {
-                getSupportActionBar().setTitle(activityTitle);
-            }
-        };
-        drawerLayout.setDrawerListener(drawerToggle);
+    private int convertStringToDrawable(String iconTask) {
+        switch (iconTask){
+            case "ic_action_new": return R.drawable.ic_action_new;
+            case "ic_action_cancel": return R.drawable.ic_action_cancel;
+            case "ic_action_pause": return R.drawable.ic_action_pause;
+            case "ic_action_discard": return R.drawable.ic_action_discard;
+            case "ic_action_accept": return R.drawable.ic_action_accept;
+            case "ic_action_chat": return R.drawable.ic_action_chat;
+            case "ic_action_refresh": return R.drawable.ic_action_refresh;
+            case "ic_action_logout": return R.drawable.ic_action_logout;
+            case "ic_action_unlink": return R.drawable.ic_action_unlink;
+            default:return R.drawable.ic_action_new;
+        }
+    }
+
+    private void selectItem(String action) {
+        Log.i(TAG,"Action: " + action);
+        switch (action){
+            case "active":
+                setTitle(tagTasks[1]);
+                break;
+            case "pending":
+                setTitle(tagTasks[2]);
+                break;
+            case "pause":
+                setTitle(tagTasks[3]);
+                break;
+            case "cancel":
+                setTitle(tagTasks[4]);
+                break;
+            case "complete":
+                setTitle(tagTasks[5]);
+                break;
+            case "message":
+                setTitle(tagOptions[1]);
+                break;
+            case "history":
+                setTitle(tagOptions[2]);
+                break;
+            case "logout":
+                LogoutDialog logoutDialog = new LogoutDialog();
+                logoutDialog.show(getFragmentManager(), TAG);
+                break;
+            case "unlink":
+                UnlinkDialog unlinkDialog = new UnlinkDialog();
+                unlinkDialog.show(getFragmentManager(),TAG);
+                break;
+        }
     }
 
     @Override
@@ -149,51 +227,19 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (drawerToggle.onOptionsItemSelected(item)) {
-            return true;
+        if(drawer.isDrawerOpen(Gravity.START)) {
+            drawer.closeDrawer();
+        }
+        else {
+            drawer.openDrawer();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if(position != 0 && position != 6)
-                selectItem(position);
-        }
-    }
-
-    private void selectItem(int position) {
-        Fragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putInt(HomeFragment.HOME_FRAGMENT_NUMBER, position);
-        fragment.setArguments(args);
-
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
-        drawerList.setItemChecked(position, true);
-        setTitle(tagTitles[position]);
-        drawerLayout.closeDrawer(drawerList);
     }
 
     @Override
     public void setTitle(CharSequence title) {
         itemTitle = title;
         getSupportActionBar().setTitle(itemTitle);
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     private boolean checkPlayServices() {
@@ -211,104 +257,4 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
 
-    private String getRegistrationId(Context context) {
-        final SharedPreferences prefs = getGCMPreferences(context);
-        String registrationId = prefs.getString(PROPERTY_REG_ID, "");
-        if (registrationId.isEmpty()) {
-            Log.i(TAG, "Registration not found.");
-            return "";
-        }
-        int registeredVersion = prefs.getInt(PROPERTY_APP_VERSION, Integer.MIN_VALUE);
-        int currentVersion = getAppVersion(context);
-        if (registeredVersion != currentVersion) {
-            Log.i(TAG, "App version changed.");
-            return "";
-        }
-        return registrationId;
-    }
-
-    private SharedPreferences getGCMPreferences(Context context) {
-        return getSharedPreferences(MainActivity.class.getSimpleName(),
-                Context.MODE_PRIVATE);
-    }
-
-    private static int getAppVersion(Context context) {
-        try {
-            PackageInfo packageInfo = context.getPackageManager()
-                    .getPackageInfo(context.getPackageName(), 0);
-            return packageInfo.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            // should never happen
-            throw new RuntimeException("Could not get package name: " + e);
-        }
-    }
-
-    private void registerInBackground() {
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... params) {
-                String msg = "";
-                try {
-                    if (gcm == null) {
-                        gcm = GoogleCloudMessaging.getInstance(context);
-                    }
-                    regid = gcm.register(SENDER_ID);
-                    msg = "Device registered, registration ID=" + regid;
-
-                    // You should send the registration ID to your server over HTTP, so it
-                    // can use GCM/HTTP or CCS to send messages to your app.
-                    sendRegistrationIdToBackend();
-
-                    // For this demo: we don't need to send it because the device will send
-                    // upstream messages to a server that echo back the message using the
-                    // 'from' address in the message.
-
-                    // Persist the regID - no need to register again.
-                    storeRegistrationId(context, regid);
-                } catch (IOException ex) {
-                    msg = "Error :" + ex.getMessage();
-                    // If there is an error, don't just keep trying to register.
-                    // Require the user to click a button again, or perform
-                    // exponential back-off.
-                }
-                return msg;
-            }
-
-            @Override
-            protected void onPostExecute(String msg) {
-            }
-        }.execute(null, null, null);
-    }
-
-    private SharedPreferences getGcmPreferences(Context context) {
-        // This sample app persists the registration ID in shared preferences, but
-        // how you store the regID in your app is up to you.
-        return getSharedPreferences(MainActivity.class.getSimpleName(),
-                Context.MODE_PRIVATE);
-    }
-
-    private void storeRegistrationId(Context context, String regId) {
-        final SharedPreferences prefs = getGcmPreferences(context);
-        int appVersion = getAppVersion(context);
-        Log.i(TAG, "Saving regId on app version " + appVersion);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(PROPERTY_REG_ID, regId);
-        editor.putInt(PROPERTY_APP_VERSION, appVersion);
-        editor.commit();
-    }
-
-    private void deleteRegistrationId(Context context) {
-        final SharedPreferences prefs = getGcmPreferences(context);
-        int appVersion = getAppVersion(context);
-        Log.i(TAG, "Remove regId on app version " + appVersion);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.remove(PROPERTY_REG_ID);
-        editor.remove(PROPERTY_APP_VERSION);
-        editor.commit();
-    }
-
-    private void sendRegistrationIdToBackend() {
-       WSGcmRegistration gcmReg = new WSGcmRegistration(context,0,"E-1",regid);
-        gcmReg.saveRegistrationId();
-    }
 }

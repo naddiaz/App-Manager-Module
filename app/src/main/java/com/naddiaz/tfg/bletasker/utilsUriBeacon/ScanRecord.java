@@ -21,7 +21,7 @@
 //   Use package Logger class.
 //   Replace ArrayMap (new in Android L) with HashMap
 
-package com.naddiaz.tfg.bletasker.utils;
+package com.naddiaz.tfg.bletasker.utilsUriBeacon;
 
 import android.os.ParcelUuid;
 import android.support.annotation.Nullable;

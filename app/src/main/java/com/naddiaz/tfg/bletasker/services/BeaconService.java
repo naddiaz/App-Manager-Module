@@ -10,9 +10,8 @@ import android.os.IBinder;
 import android.os.SystemClock;
 import android.util.Log;
 
-import com.naddiaz.tfg.bletasker.utils.ScanRecord;
-import com.naddiaz.tfg.bletasker.utils.ScanResult;
-import com.naddiaz.tfg.bletasker.webservices.WSBeacons;
+import com.naddiaz.tfg.bletasker.utilsUriBeacon.ScanRecord;
+import com.naddiaz.tfg.bletasker.utilsUriBeacon.ScanResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,8 +66,8 @@ public class BeaconService extends Service {
                 new Runnable() {
                     @Override
                     public void run() {
-                        WSBeacons sendBeacons = new WSBeacons(getApplicationContext(), beacon.getKey(), beacon.getValue().getRssi(), beacon.getValue().getTimestampNanos());
-                        sendBeacons.postLocation();
+                        //WSBeacons sendBeacons = new WSBeacons(getApplicationContext(), beacon.getKey(), beacon.getValue().getRssi(), beacon.getValue().getTimestampNanos());
+                        //sendBeacons.postLocation();
                     }
                 }.run();
             }
@@ -114,7 +113,6 @@ public class BeaconService extends Service {
 
             ScanRecord record = ScanRecord.parseFromBytes(scanBytes);
             ScanResult result = new ScanResult(device, record, rssi, SystemClock.elapsedRealtimeNanos());
-
             if(scanResult.containsKey(device)){
                 scanResult.remove(device);
                 scanResult.put(device,result);

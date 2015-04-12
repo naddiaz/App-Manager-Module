@@ -71,7 +71,7 @@ public class CheckUserListener implements View.OnClickListener {
 
     private Notification getDefaultNotification(Notification.Builder builder) {
         builder
-                .setSmallIcon(R.drawable.bletaskermini)
+                .setSmallIcon(R.drawable.logo_mini)
                 .setContentTitle("BLE Tasker")
                 .setContentText("Se está detectando la localización por Bluetooth")
                 .setOngoing(true)

@@ -20,7 +20,7 @@
 // Changes:
 //   Removed the last two equals() methods.
 
-package com.naddiaz.tfg.bletasker.utils;
+package com.naddiaz.tfg.bletasker.utilsUriBeacon;
 
 import android.util.SparseArray;
 

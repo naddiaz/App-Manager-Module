@@ -21,22 +21,65 @@
     <string name="enter_tasks">Tareas Entrantes</string>
     <string name="pause_tasks">Tareas Pausadas</string>
     <string name="message">Mensajes Personales</string>
-    <string name="title_activity_main">MainActivity</string>
 
-    <string-array name="Tags">
+
+
+    <!--Activities titles-->
+
+    <string name="title_activity_splash">Bienvenida</string>
+    <string name="title_activity_main">Panel de control</string>
+    <string name="title_activity_restore_user">Recuperación</string>
+
+    <!--Drawer navigation labels and actions-->
+    <string-array name="tagTasks">
         <item>Tareas</item>
         <item>Activas</item>
         <item>Pendientes</item>
         <item>Pausadas</item>
         <item>Canceladas</item>
         <item>Completas</item>
+    </string-array>
+
+    <string-array name="tagOptions">
         <item>Opciones</item>
         <item>Mensajes</item>
         <item>Historial</item>
-        <item>Cerrar Sesión</item>
     </string-array>
 
+    <string-array name="tagConfiguration">
+        <item>Ajustes</item>
+        <item>Cerrar Sesión</item>
+        <item>Desvincular dispositivo</item>
+    </string-array>
+
+    <!--Generic messages-->
     <string name="drawer_open">Abrir navigation drawer</string>
     <string name="drawer_close">Cerrar navigation drawer</string>
-    <string name="headlines">Encabezados de</string>
+    <string name="headlines">Estás en </string>
+    <string name="ws_url_data_hash_registration">http://tfg.naddiaz.com/hash/confirm</string>
+    <string name="ws_url_data_hash_verify">http://tfg.naddiaz.com/hash/verify</string>
+    <string name="ws_url_gcm_registration">http://tfg.naddiaz.com/gcm/registration</string>
+    <string name="txt_welcome">Bienvenido</string>
+    <string name="txt_loading_data_register">Cargando datos de registro...</string>
+    <string name="txt_advertisement_welcome_message">En este momento vamos a proceder a configurar la aplicación, tendrá que introducir el código que la empresa le ha proporcionado</string>
+    <string name="txt_advertisement_welcome_message_remember">Si no los tiene o no los recuerda, por favor indíqueselo a la empresa para que se los proporcione de nuevo.</string>
+    <string name="btn_advertisement_ok">Entendido</string>
+    <string name="edtxt_hint_data_hash_register">Código</string>
+    <string name="btn_data_hash_register">Verificar</string>
+    <string name="txt_data_hash">Inserte el código proporcionado</string>
+    <string name="keyboard_hash_register">LISTO</string>
+    <string name="ws_error_timeout_hash">No se ha podido consultar el código, inténtelo de nuevo</string>
+    <string name="ws_error_hash_false">Este código no es válido</string>
+    <string name="ws_error_verify_hash">El código que se ha introducido ha dejado de ser válido por alguna razón</string>
+
+    <!--Dialog message-->
+    <string name="dialog_yes">Si</string>
+    <string name="dialog_no">No</string>
+
+    <string name="dialog_logout_message">¿Desea cerrar la sesión?</string>
+    <string name="dialog_logout_message_description">Si cierra la sesión dejará de recibir notificaciones de tareas y mensajes</string>
+    <string name="dialog_close_session">Cerrar Sesión</string>
+    <string name="dialog_unlink_message">¿Desea desvincular el dispositivo?</string>
+    <string name="dialog_unlink_message_description">Si desvincula el dispositivo, la próxima vez que quiera entrar en la aplicación le pedirá un nuevo código de acceso.</string>
+    <string name="dialog_unlink_device">Desvincular</string>
 </resources>

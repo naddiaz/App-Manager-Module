@@ -24,12 +24,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        int i = getArguments().getInt(HOME_FRAGMENT_NUMBER);
-        String article = getResources().getStringArray(R.array.Tags)[i];
 
-        getActivity().setTitle(article);
-        TextView headline = (TextView)rootView.findViewById(R.id.headline);
-        headline.append(" "+article);
 
         return rootView;
     }
