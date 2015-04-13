@@ -27,6 +27,7 @@ import com.naddiaz.tfg.bletasker.dialogs.LogoutDialog;
 import com.naddiaz.tfg.bletasker.dialogs.UnlinkDialog;
 import com.naddiaz.tfg.bletasker.fragments.HomeFragment;
 import com.naddiaz.tfg.bletasker.utils.UserPrefecences;
+import com.naddiaz.tfg.bletasker.webservices.WSLoadWorks;
 
 import java.util.ArrayList;
 
@@ -66,7 +67,6 @@ public class MainActivity extends ActionBarActivity {
         if (checkPlayServices()) {
             userPrefecences = new UserPrefecences(getApplication()).readPreferences();
             worksDbHelper = new WorksDbHelper(context);
-            //worksDbHelper.clearWorks();
             createDrawerNavigation();
             if (savedInstanceState == null) {
                 selectItem(actualView);
@@ -84,6 +84,7 @@ public class MainActivity extends ActionBarActivity {
         super.onResume();
         checkPlayServices();
         setTitle(itemTitle);
+        //new WSLoadWorks(this,userPrefecences.getHash()).syncWorks();
         Log.i(TAG,"onResume");
     }
 

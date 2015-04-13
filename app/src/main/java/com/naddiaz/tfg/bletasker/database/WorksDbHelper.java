@@ -76,6 +76,15 @@ public class WorksDbHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void updateWorkState(Work work,String state){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(Work.FIELD_STATE, state);
+
+        db.update(TABLE_NAME,values,Work.FIELD_ID_TASK + " = ?", new String[] {work.getId_task()});
+    }
+
     public Work getWork(String id_task){
         SQLiteDatabase db = this.getReadableDatabase();
 

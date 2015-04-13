@@ -44,7 +44,7 @@ public class WSLoadWorks {
         this.URL = ctx.getResources().getString(R.string.ws_url_load_works);
     }
 
-    public void getWorks(){
+    public WSLoadWorks getWorks(){
         RequestQueue queue = Volley.newRequestQueue(this.ctx);
 
         Map<String, String>  params = new HashMap<String, String>();
@@ -78,6 +78,7 @@ public class WSLoadWorks {
             }
         });
         queue.add(jsObjRequest);
+        return this;
     }
 
     private void getJSONWorks(JSONObject response, String state) throws JSONException {
@@ -86,31 +87,94 @@ public class WSLoadWorks {
         if(works.length() > 0) {
             for (int i = 0; i < works.length(); i++) {
                 JSONObject JSONwork = works.getJSONObject(i);
-                Work work = new Work();
-                work.setId_task(JSONwork.getString(Work.FIELD_ID_TASK));
-                work.setDescription(JSONwork.getString(Work.FIELD_DESCRIPTION));
-                work.setPriority(JSONwork.getInt(Work.FIELD_PRIORITY));
-                work.setN_employees(JSONwork.getInt(Work.FIELD_N_EMPLOYEES));
-                switch (state) {
-                    case Work.GROUP_COMPLETE:
-                        work.setState(Work.STATE_COMPLETE);
-                        break;
-                    case Work.GROUP_ACTIVE:
-                        work.setState(Work.STATE_ACTIVE);
-                        break;
-                    case Work.GROUP_PAUSE:
-                        work.setState(Work.STATE_PAUSE);
-                        break;
-                    case Work.GROUP_PENDING:
-                        work.setState(Work.STATE_PENDING);
-                        break;
-                    case Work.GROUP_CANCEL:
-                        work.setState(Work.STATE_CANCEL);
-                        break;
-                }
-                work.setCreated_at(JSONwork.getString(Work.FIELD_CREATED_AT));
-                worksDB.createWork(work);
+                createWork(worksDB, JSONwork, state);
             }
         }
+    }
+
+    public WSLoadWorks syncWorks(){
+        RequestQueue queue = Volley.newRequestQueue(this.ctx);
+
+        Map<String, String>  params = new HashMap<String, String>();
+        params.put("hash", hash);
+
+        CustomRequest jsObjRequest = new CustomRequest(Request.Method.POST, URL, params,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i(TAG,response.toString());
+                        if(response.has("status")){
+                            Toast.makeText(ctx, ctx.getString(R.string.ws_error_load_works), Toast.LENGTH_LONG).show();
+                        }
+                        else{
+                            try {
+                                syncJSONWorks(response, Work.GROUP_COMPLETE);
+                                syncJSONWorks(response, Work.GROUP_ACTIVE);
+                                syncJSONWorks(response, Work.GROUP_PAUSE);
+                                syncJSONWorks(response, Work.GROUP_PENDING);
+                                syncJSONWorks(response, Work.GROUP_CANCEL);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(ctx,ctx.getString(R.string.ws_error_timeout_works),Toast.LENGTH_LONG).show();
+                Log.d("Error.Response", String.valueOf(error));
+            }
+        });
+        queue.add(jsObjRequest);
+        return this;
+    }
+
+    private void syncJSONWorks(JSONObject response, String state) throws JSONException {
+        WorksDbHelper worksDB = new WorksDbHelper(ctx);
+        JSONArray works = response.getJSONArray(state);
+        if(works.length() > 0) {
+            for (int i = 0; i < works.length(); i++) {
+                JSONObject JSONwork = works.getJSONObject(i);
+                Work actualWork = worksDB.getWork(JSONwork.getString(Work.FIELD_ID_TASK));
+                if(actualWork == null){
+                    createWork(worksDB, JSONwork, state);
+                }
+            }
+        }
+        else{
+            worksDB.clearWorks();
+        }
+    }
+
+    private void createWork(WorksDbHelper worksDB, JSONObject JSONwork, String state) throws JSONException {
+        Work work = new Work();
+        work.setId_task(JSONwork.getString(Work.FIELD_ID_TASK));
+        work.setDescription(JSONwork.getString(Work.FIELD_DESCRIPTION));
+        work.setPriority(JSONwork.getInt(Work.FIELD_PRIORITY));
+        work.setN_employees(JSONwork.getInt(Work.FIELD_N_EMPLOYEES));
+        switch (state) {
+            case Work.GROUP_COMPLETE:
+                work.setState(Work.STATE_COMPLETE);
+                break;
+            case Work.GROUP_ACTIVE:
+                work.setState(Work.STATE_ACTIVE);
+                break;
+            case Work.GROUP_PAUSE:
+                work.setState(Work.STATE_PAUSE);
+                break;
+            case Work.GROUP_PENDING:
+                work.setState(Work.STATE_PENDING);
+                break;
+            case Work.GROUP_CANCEL:
+                work.setState(Work.STATE_CANCEL);
+                break;
+        }
+        work.setCreated_at(JSONwork.getString(Work.FIELD_CREATED_AT));
+        worksDB.createWork(work);
+    }
+
+    private void updateWork(WorksDbHelper worksDB, JSONObject JSONwork, String state) throws JSONException {
+        worksDB.clearWork(JSONwork.getString(Work.FIELD_ID_TASK));
+        createWork(worksDB,JSONwork,state);
     }
 }

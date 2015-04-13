@@ -56,6 +56,7 @@
     <string name="ws_url_data_hash_verify">http://tfg.naddiaz.com/hash/verify</string>
     <string name="ws_url_gcm_registration">http://tfg.naddiaz.com/gcm/registration</string>
     <string name="ws_url_load_works">http://tfg.naddiaz.com/employee/get/tasks</string>
+    <string name="ws_url_state_work">http://tfg.naddiaz.com/employee/set/task/state</string>
 
     <!--Error WS messages-->
     <string name="ws_error_timeout_hash">No se ha podido consultar el código, inténtelo de nuevo</string>
@@ -63,6 +64,8 @@
     <string name="ws_error_verify_hash">El código que se ha introducido ha dejado de ser válido por alguna razón</string>
     <string name="ws_error_load_works">Ha habido un error al recopilar la información de los trabajos. Puede haber una desincronización con el servidor</string>
     <string name="ws_error_timeout_works">Parece que no se ha podido conectar con el servidor para actualizar la lista de trabajos</string>
+    <string name="ws_error_change_work_state">Ha habido un error en la sincronización del estado del trabajo</string>
+    <string name="ws_error_timeout_sync">Ha habido una desincronización.</string>
 
     <!--Dialog message-->
     <string name="dialog_yes">Si</string>
