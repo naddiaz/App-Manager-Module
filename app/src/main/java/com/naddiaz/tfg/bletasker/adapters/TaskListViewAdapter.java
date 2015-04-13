@@ -123,21 +123,7 @@ public class TaskListViewAdapter extends BaseAdapter{
             });
         }
 
-        Button btnItemPause = (Button) convertView.findViewById(R.id.btnItemPause);
-        if(this.state == Work.STATE_PENDING){
-            btnItemPause.setEnabled(false);
-            lytItemTopBlock.setBackgroundDrawable(ctx.getResources().getDrawable(R.color.md_orange_500));
-        }
-        else {
-            btnItemPause.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    workDB.updateWorkState(taskItem, Work.STATE_PAUSE);
-                    wsWorksState.setWorkState(taskItem.getId_task(), Work.STATE_PAUSE);
-                    removeListItem(parent.getChildAt(position),position);
-                }
-            });
-        }
+
 
         Button btnItemFinish = (Button) convertView.findViewById(R.id.btnItemFinish);
         if(this.state == Work.STATE_COMPLETE){
@@ -152,6 +138,22 @@ public class TaskListViewAdapter extends BaseAdapter{
                     wsWorksState.setWorkState(taskItem.getId_task(), Work.STATE_COMPLETE);
                     FinishWorkDialog finishWorkDialog = new FinishWorkDialog(taskListViewAdapter,parent.getChildAt(position), position);
                     finishWorkDialog.show(manager, "FinishDialog");
+                }
+            });
+        }
+        Button btnItemPause = (Button) convertView.findViewById(R.id.btnItemPause);
+        if(this.state == Work.STATE_PENDING){
+            btnItemPause.setEnabled(false);
+            btnItemFinish.setEnabled(false);
+            lytItemTopBlock.setBackgroundDrawable(ctx.getResources().getDrawable(R.color.md_orange_500));
+        }
+        else {
+            btnItemPause.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    workDB.updateWorkState(taskItem, Work.STATE_PAUSE);
+                    wsWorksState.setWorkState(taskItem.getId_task(), Work.STATE_PAUSE);
+                    removeListItem(parent.getChildAt(position),position);
                 }
             });
         }

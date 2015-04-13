@@ -26,6 +26,8 @@ public class Work {
     public static final String GROUP_CANCEL = "works_stop";
     public static final String GROUP_COMPLETE = "works_complete";
 
+    public static final String PENDING_TASK = "pending_task";
+
 
     private String id_task;
     private String description;

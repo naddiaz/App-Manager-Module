@@ -1,6 +1,8 @@
 package com.naddiaz.tfg.bletasker.webservices;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.naddiaz.tfg.bletasker.R;
+import com.naddiaz.tfg.bletasker.database.Work;
+import com.naddiaz.tfg.bletasker.utils.UserPrefecences;
 import com.naddiaz.tfg.bletasker.widget.MainActivity;
 
 import android.app.IntentService;
@@ -17,6 +19,8 @@ import android.util.Log;
 
 public class GcmIntentService extends IntentService {
     public static final int NOTIFICATION_ID = 1;
+
+
     private NotificationManager mNotificationManager;
     NotificationCompat.Builder builder;
 
@@ -40,12 +44,13 @@ public class GcmIntentService extends IntentService {
              * not interested in, or that you don't recognize.
              */
             if (GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-                sendNotification("Send error: " + extras.toString());
+                sendNotification("Send error",extras.toString());
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_DELETED.equals(messageType)) {
-                sendNotification("Deleted messages on server: " + extras.toString());
+                sendNotification("Deleted messages on server", extras.toString());
                 // If it's a regular GCM message, do some work.
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
-                sendNotification("Received: " + extras.toString());
+                new WSLoadWorks(getApplication(),new UserPrefecences(getApplication()).readPreferences().getHash()).getWorks();
+                sendNotification(extras.getString("description").split(",")[0], extras.getString("description").split(",")[1]);
                 Log.i(TAG, "Received: " + extras.toString());
             }
         }
@@ -56,20 +61,22 @@ public class GcmIntentService extends IntentService {
     // Put the message into a notification and post it.
     // This is just one simple example of what you might choose to do with
     // a GCM message.
-    private void sendNotification(String msg) {
+    private void sendNotification(String title, String description) {
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MainActivity.class), 0);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(Work.PENDING_TASK, true);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.bletaskermini)
-                        .setContentTitle("GCM Notification")
+                        .setSmallIcon(R.drawable.logo_mini)
+                        .setContentTitle(title)
                         .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText(msg))
-                        .setContentText(msg);
+                                .bigText(description))
+                        .setContentText(description);
 
         mBuilder.setContentIntent(contentIntent);
         mBuilder.setAutoCancel(true);

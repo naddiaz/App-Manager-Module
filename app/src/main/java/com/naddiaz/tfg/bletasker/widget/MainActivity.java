@@ -69,8 +69,20 @@ public class MainActivity extends ActionBarActivity {
             worksDbHelper = new WorksDbHelper(context);
             createDrawerNavigation();
             if (savedInstanceState == null) {
-                selectItem(actualView);
-                setTitle(itemTitle);
+                Bundle extras = getIntent().getExtras();
+                if(extras == null) {
+                    selectItem(actualView);
+                    setTitle(itemTitle);
+                }
+                else {
+                    Boolean pendingIntent = extras.getBoolean(Work.PENDING_TASK);
+                    if(pendingIntent){
+                        actualView = Work.STATE_PENDING;
+                        selectItem(actualView);
+                        setTitle(itemTitle);
+
+                    }
+                }
             }
         }
         else {
@@ -84,7 +96,6 @@ public class MainActivity extends ActionBarActivity {
         super.onResume();
         checkPlayServices();
         setTitle(itemTitle);
-        //new WSLoadWorks(this,userPrefecences.getHash()).syncWorks();
         Log.i(TAG,"onResume");
     }
 
@@ -210,6 +221,7 @@ public class MainActivity extends ActionBarActivity {
                 ArrayList<Work> works_pending = worksDbHelper.getWorksByState(Work.STATE_PENDING);
                 ListView listView_pending = (ListView) findViewById(R.id.listview_tasks);
                 TaskListViewAdapter taskListViewAdapter_pending = new TaskListViewAdapter(context,works_pending,Work.STATE_PENDING,getFragmentManager());
+                taskListViewAdapter_pending.notifyDataSetChanged();
                 listView_pending.setAdapter(taskListViewAdapter_pending);
                 taskListViewAdapter_pending.notifyDataSetChanged();
                 setTitle(tagTasks[2]);

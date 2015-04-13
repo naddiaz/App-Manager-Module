@@ -34,7 +34,7 @@ public class WSLoadWorks {
     private static final String TAG = "WSLoadWorks";
     private Context ctx;
     private String hash;
-
+    WorksDbHelper worksDB;
     private static String URL;
 
 
@@ -42,6 +42,7 @@ public class WSLoadWorks {
         this.ctx = ctx;
         this.hash = hash;
         this.URL = ctx.getResources().getString(R.string.ws_url_load_works);
+        worksDB = new WorksDbHelper(ctx);
     }
 
     public WSLoadWorks getWorks(){
@@ -60,6 +61,7 @@ public class WSLoadWorks {
                         }
                         else{
                             try {
+                                worksDB.clearWorks();
                                 getJSONWorks(response,Work.GROUP_COMPLETE);
                                 getJSONWorks(response,Work.GROUP_ACTIVE);
                                 getJSONWorks(response,Work.GROUP_PAUSE);
@@ -82,7 +84,6 @@ public class WSLoadWorks {
     }
 
     private void getJSONWorks(JSONObject response, String state) throws JSONException {
-        WorksDbHelper worksDB = new WorksDbHelper(ctx);
         JSONArray works = response.getJSONArray(state);
         if(works.length() > 0) {
             for (int i = 0; i < works.length(); i++) {
@@ -130,7 +131,6 @@ public class WSLoadWorks {
     }
 
     private void syncJSONWorks(JSONObject response, String state) throws JSONException {
-        WorksDbHelper worksDB = new WorksDbHelper(ctx);
         JSONArray works = response.getJSONArray(state);
         if(works.length() > 0) {
             for (int i = 0; i < works.length(); i++) {
