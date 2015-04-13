@@ -200,7 +200,7 @@ public class MainActivity extends ActionBarActivity {
             case Work.STATE_ACTIVE:
                 ArrayList<Work> works_active = worksDbHelper.getWorksByState(Work.STATE_ACTIVE);
                 ListView listView_active = (ListView) findViewById(R.id.listview_tasks);
-                TaskListViewAdapter taskListViewAdapter_active = new TaskListViewAdapter(context,works_active,Work.STATE_ACTIVE);
+                TaskListViewAdapter taskListViewAdapter_active = new TaskListViewAdapter(context,works_active,Work.STATE_ACTIVE,getFragmentManager());
                 listView_active.setAdapter(taskListViewAdapter_active);
                 taskListViewAdapter_active.notifyDataSetChanged();
                 setTitle(tagTasks[1]);
@@ -209,7 +209,7 @@ public class MainActivity extends ActionBarActivity {
             case Work.STATE_PENDING:
                 ArrayList<Work> works_pending = worksDbHelper.getWorksByState(Work.STATE_PENDING);
                 ListView listView_pending = (ListView) findViewById(R.id.listview_tasks);
-                TaskListViewAdapter taskListViewAdapter_pending = new TaskListViewAdapter(context,works_pending,Work.STATE_PENDING);
+                TaskListViewAdapter taskListViewAdapter_pending = new TaskListViewAdapter(context,works_pending,Work.STATE_PENDING,getFragmentManager());
                 listView_pending.setAdapter(taskListViewAdapter_pending);
                 taskListViewAdapter_pending.notifyDataSetChanged();
                 setTitle(tagTasks[2]);
@@ -218,7 +218,7 @@ public class MainActivity extends ActionBarActivity {
             case Work.STATE_PAUSE:
                 ArrayList<Work> works_pause  = worksDbHelper.getWorksByState(Work.STATE_PAUSE);
                 ListView listView_pause = (ListView) findViewById(R.id.listview_tasks);
-                TaskListViewAdapter taskListViewAdapter_pause = new TaskListViewAdapter(context,works_pause,Work.STATE_PAUSE);
+                TaskListViewAdapter taskListViewAdapter_pause = new TaskListViewAdapter(context,works_pause,Work.STATE_PAUSE,getFragmentManager());
                 listView_pause.setAdapter(taskListViewAdapter_pause);
                 taskListViewAdapter_pause.notifyDataSetChanged();
                 setTitle(tagTasks[3]);
@@ -227,7 +227,7 @@ public class MainActivity extends ActionBarActivity {
             case Work.STATE_CANCEL:
                 ArrayList<Work> works_cancel  = worksDbHelper.getWorksByState(Work.STATE_CANCEL);
                 ListView listView_cancel = (ListView) findViewById(R.id.listview_tasks);
-                TaskListViewAdapter taskListViewAdapter_cancel = new TaskListViewAdapter(context,works_cancel,Work.STATE_CANCEL);
+                TaskListViewAdapter taskListViewAdapter_cancel = new TaskListViewAdapter(context,works_cancel,Work.STATE_CANCEL,getFragmentManager());
                 listView_cancel.setAdapter(taskListViewAdapter_cancel);
                 taskListViewAdapter_cancel.notifyDataSetChanged();
                 setTitle(tagTasks[4]);
@@ -236,7 +236,7 @@ public class MainActivity extends ActionBarActivity {
             case Work.STATE_COMPLETE:
                 ArrayList<Work> works_complete  = worksDbHelper.getWorksByState(Work.STATE_COMPLETE);
                 ListView listView_complete = (ListView) findViewById(R.id.listview_tasks);
-                TaskListViewAdapter taskListViewAdapter_complete = new TaskListViewAdapter(context,works_complete,Work.STATE_COMPLETE);
+                TaskListViewAdapter taskListViewAdapter_complete = new TaskListViewAdapter(context,works_complete,Work.STATE_COMPLETE,getFragmentManager());
                 listView_complete.setAdapter(taskListViewAdapter_complete);
                 taskListViewAdapter_complete.notifyDataSetChanged();
                 setTitle(tagTasks[5]);

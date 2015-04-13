@@ -1,6 +1,8 @@
 package com.naddiaz.tfg.bletasker.adapters;
 
 import android.animation.ValueAnimator;
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +21,8 @@ import android.widget.TextView;
 import com.naddiaz.tfg.bletasker.R;
 import com.naddiaz.tfg.bletasker.database.Work;
 import com.naddiaz.tfg.bletasker.database.WorksDbHelper;
+import com.naddiaz.tfg.bletasker.dialogs.CancelWorkDialog;
+import com.naddiaz.tfg.bletasker.dialogs.FinishWorkDialog;
 import com.naddiaz.tfg.bletasker.utils.UserPrefecences;
 import com.naddiaz.tfg.bletasker.webservices.WSWorkState;
 
@@ -33,20 +37,27 @@ public class TaskListViewAdapter extends BaseAdapter{
 
     private static final String TAG = "TaskListViewAdapter";
 
+    private FragmentManager manager;
+
     private Context ctx;
     private ArrayList<Work> listArray;
     private String state;
     private LayoutInflater inflater;
     private WorksDbHelper workDB;
     private WSWorkState wsWorksState;
-    public TaskListViewAdapter(Context ctx, ArrayList<Work> listArray, String state){
+    TaskListViewAdapter taskListViewAdapter;
+
+    public TaskListViewAdapter(Context ctx, ArrayList<Work> listArray, String state, FragmentManager manager){
         this.ctx = ctx;
         this.listArray = listArray;
         this.state = state;
+        this.manager = manager;
+
         inflater  = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        Log.i(TAG,"COUNT: " + getCount());
         workDB = new WorksDbHelper(ctx);
         wsWorksState = new WSWorkState(ctx,new UserPrefecences(ctx).readPreferences().getHash());
+
+        this.taskListViewAdapter = this;
     }
     @Override
     public int getCount() {
@@ -94,6 +105,7 @@ public class TaskListViewAdapter extends BaseAdapter{
 
         LinearLayout lytItemTopBlock = (LinearLayout) convertView.findViewById(R.id.lytItemTopBlock);
         LinearLayout lytItemActions = (LinearLayout) convertView.findViewById(R.id.lytItemActions);
+        LinearLayout lytItemBottomBlock = (LinearLayout) convertView.findViewById(R.id.lytItemBottomBlock);
 
         Button btnItemRun = (Button) convertView.findViewById(R.id.btnItemRun);
         if(this.state == Work.STATE_ACTIVE){
@@ -104,10 +116,8 @@ public class TaskListViewAdapter extends BaseAdapter{
             btnItemRun.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.i(TAG, "TASK RUN: " + taskItem.getId_task());
                     workDB.updateWorkState(taskItem, Work.STATE_ACTIVE);
                     wsWorksState.setWorkState(taskItem.getId_task(), Work.STATE_ACTIVE);
-                    Log.i(TAG, "Position: " + position);
                     removeListItem(parent.getChildAt(position),position);
                 }
             });
@@ -122,10 +132,8 @@ public class TaskListViewAdapter extends BaseAdapter{
             btnItemPause.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.i(TAG, "TASK PAUSE: " + taskItem.getId_task());
                     workDB.updateWorkState(taskItem, Work.STATE_PAUSE);
                     wsWorksState.setWorkState(taskItem.getId_task(), Work.STATE_PAUSE);
-                    Log.i(TAG, "Position: " + position);
                     removeListItem(parent.getChildAt(position),position);
                 }
             });
@@ -133,25 +141,24 @@ public class TaskListViewAdapter extends BaseAdapter{
 
         Button btnItemFinish = (Button) convertView.findViewById(R.id.btnItemFinish);
         if(this.state == Work.STATE_COMPLETE){
-            btnItemFinish.setEnabled(false);
+            lytItemActions.setVisibility(View.INVISIBLE);
             lytItemTopBlock.setBackgroundDrawable(ctx.getResources().getDrawable(R.color.md_blue_500));
         }
         else {
             btnItemFinish.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.i(TAG, "TASK FINISH: " + taskItem.getId_task());
                     workDB.updateWorkState(taskItem, Work.STATE_COMPLETE);
                     wsWorksState.setWorkState(taskItem.getId_task(), Work.STATE_COMPLETE);
-                    Log.i(TAG, "Position: " + position);
-                    removeListItem(parent.getChildAt(position),position);
+                    FinishWorkDialog finishWorkDialog = new FinishWorkDialog(taskListViewAdapter,parent.getChildAt(position), position);
+                    finishWorkDialog.show(manager, "FinishDialog");
                 }
             });
         }
 
         if(this.state == Work.STATE_PAUSE){
             btnItemPause.setEnabled(false);
-            lytItemTopBlock.setBackgroundDrawable(ctx.getResources().getDrawable(R.color.md_red_500));
+            lytItemTopBlock.setBackgroundDrawable(ctx.getResources().getDrawable(R.color.md_red_200));
         }
 
         final Button btnItemCancel = (Button) convertView.findViewById(R.id.btnItemCancel);
@@ -163,28 +170,27 @@ public class TaskListViewAdapter extends BaseAdapter{
             btnItemCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.i(TAG, "TASK CANCEL: " + taskItem.getId_task());
                     workDB.updateWorkState(taskItem, Work.STATE_CANCEL);
                     wsWorksState.setWorkState(taskItem.getId_task(), Work.STATE_CANCEL);
-                    Log.i(TAG, "Position: " + position);
-                    removeListItem(parent.getChildAt(position), position);
+                    CancelWorkDialog cancelWorkDialog = new CancelWorkDialog(taskListViewAdapter,parent.getChildAt(position), position);
+                    cancelWorkDialog.show(manager,"CancelDialog");
                 }
             });
         }
         return convertView;
     }
 
-    protected void removeListItem(final View rowView, final int position) {
+    public void removeListItem(final View rowView, final int position) {
         final Animation animation = AnimationUtils.loadAnimation(
                 ctx, android.R.anim.slide_out_right);
         animation.setDuration(500);
         rowView.startAnimation(animation);
-        rowView.postDelayed(new Runnable(){
+        rowView.postDelayed(new Runnable() {
             @Override
             public void run() {
                 listArray.remove(position);
                 notifyDataSetChanged();
             }
-        },animation.getDuration());
+        }, animation.getDuration());
     }
 }

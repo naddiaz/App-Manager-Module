@@ -76,6 +76,11 @@
     <string name="dialog_unlink_message">¿Desea desvincular el dispositivo?</string>
     <string name="dialog_unlink_message_description">Si desvincula el dispositivo, la próxima vez que quiera entrar en la aplicación le pedirá un nuevo código de acceso.</string>
     <string name="dialog_unlink_device">Desvincular</string>
+    <string name="dialog_cancel_work_message">¿Desea cancelar la tarea?</string>
+    <string name="dialog_cancel_work_description">Cancelar una tarea implica no poder volver a restaurar su estado a Activo o Pausado, ni tampoco marcarla como Finalizada</string>
+    <string name="dialog_cancel_work">Cancelar Tarea</string>
+    <string name="dialog_finish_work_message">¿Desea finalizar la tarea?</string>
+    <string name="dialog_finish_work">Finalizar Tarea</string>
 
     <!--Generic-->
     <string name="drawer_open">Abrir navigation drawer</string>
