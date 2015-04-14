@@ -1,18 +1,24 @@
 package com.naddiaz.tfg.bletasker.widget;
 
 
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -25,9 +31,7 @@ import com.naddiaz.tfg.bletasker.database.Work;
 import com.naddiaz.tfg.bletasker.database.WorksDbHelper;
 import com.naddiaz.tfg.bletasker.dialogs.LogoutDialog;
 import com.naddiaz.tfg.bletasker.dialogs.UnlinkDialog;
-import com.naddiaz.tfg.bletasker.fragments.HomeFragment;
 import com.naddiaz.tfg.bletasker.utils.UserPrefecences;
-import com.naddiaz.tfg.bletasker.webservices.WSLoadWorks;
 
 import java.util.ArrayList;
 
@@ -35,27 +39,45 @@ import java.util.ArrayList;
 public class MainActivity extends ActionBarActivity {
 
     private static final String TAG = "MainActivity";
+    private static final String TASKS_FRAGMENT_TAG = "TasksFragment";
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     private CharSequence itemTitle;
     private String actualView = Work.STATE_ACTIVE;
 
+    private static final String ACTION_MESSAGE = "message";
+    private static final String ACTION_HISTORY = "history";
+    private static final String ACTION_LOGOUT = "logout";
+    private static final String ACTION_UNLINK = "unlink";
+
+    private static final String ICON_NEW = "ic_action_new";
+    private static final String ICON_CANCEL = "ic_action_cancel";
+    private static final String ICON_PAUSE = "ic_action_pause";
+    private static final String ICON_DISCARD = "ic_action_discard";
+    private static final String ICON_ACCEPT = "ic_action_accept";
+    private static final String ICON_CHAT = "ic_action_chat";
+    private static final String ICON_REFRESH = "ic_action_refresh";
+    private static final String ICON_LOGOUT = "ic_action_logout";
+    private static final String ICON_UNLINK = "ic_action_unlink";
+
+
     DrawerFrameLayout drawer;
 
     private String[] tagTasks;
-    private final static String[] iconTasks = {"ic_action_new","ic_action_cancel","ic_action_pause","ic_action_discard","ic_action_accept"};
-    private final static String[] actionsTasks = {"active","pending","pause","cancel","complete"};
+    private final static String[] iconTasks = {ICON_NEW,ICON_CANCEL,ICON_PAUSE,ICON_DISCARD,ICON_ACCEPT};
+    private final static String[] actionsTasks = {Work.STATE_ACTIVE,Work.STATE_PENDING,Work.STATE_PAUSE,Work.STATE_CANCEL,Work.STATE_COMPLETE};
 
     private String[] tagOptions;
-    private final static String[] iconOptions = {"ic_action_chat","ic_action_refresh"};
-    private final static String[] actionsOptions = {"message","history"};
+    private final static String[] iconOptions = {ICON_CHAT,ICON_REFRESH};
+    private final static String[] actionsOptions = {ACTION_MESSAGE,ACTION_HISTORY};
 
     private String[] tagConfiguration;
-    private final static String[] iconConfiguration = {"ic_action_logout","ic_action_unlink"};
-    private final static String[] actionsConfiguration = {"logout","unlink"};
+    private final static String[] iconConfiguration = {ICON_LOGOUT,ICON_UNLINK};
+    private final static String[] actionsConfiguration = {ACTION_LOGOUT,ACTION_UNLINK};
 
     private WorksDbHelper worksDbHelper;
     Context context;
+
 
     UserPrefecences userPrefecences;
 
@@ -123,12 +145,6 @@ public class MainActivity extends ActionBarActivity {
                         .setBackground(getResources().getDrawable(R.color.green_grey))
                         .setName(userPrefecences.getWorker_name().toUpperCase())
                         .setDescription("ID empleado: " + userPrefecences.getId_person())
-                        .setOnProfileClickListener(new DrawerProfile.OnProfileClickListener() {
-                            @Override
-                            public void onClick(DrawerProfile drawerProfile) {
-                                Toast.makeText(MainActivity.this, "Clicked profile", Toast.LENGTH_SHORT).show();
-                            }
-                        })
         );
         drawer.addItem(
                 new DrawerItem().setTextPrimary(tagTasks[0])
@@ -192,20 +208,20 @@ public class MainActivity extends ActionBarActivity {
 
     private int convertStringToDrawable(String iconTask) {
         switch (iconTask){
-            case "ic_action_new": return R.drawable.ic_action_new;
-            case "ic_action_cancel": return R.drawable.ic_action_cancel;
-            case "ic_action_pause": return R.drawable.ic_action_pause;
-            case "ic_action_discard": return R.drawable.ic_action_discard;
-            case "ic_action_accept": return R.drawable.ic_action_accept;
-            case "ic_action_chat": return R.drawable.ic_action_chat;
-            case "ic_action_refresh": return R.drawable.ic_action_refresh;
-            case "ic_action_logout": return R.drawable.ic_action_logout;
-            case "ic_action_unlink": return R.drawable.ic_action_unlink;
+            case ICON_NEW: return R.drawable.ic_action_new;
+            case ICON_CANCEL: return R.drawable.ic_action_cancel;
+            case ICON_PAUSE: return R.drawable.ic_action_pause;
+            case ICON_DISCARD: return R.drawable.ic_action_discard;
+            case ICON_ACCEPT: return R.drawable.ic_action_accept;
+            case ICON_CHAT: return R.drawable.ic_action_chat;
+            case ICON_REFRESH: return R.drawable.ic_action_refresh;
+            case ICON_LOGOUT: return R.drawable.ic_action_logout;
+            case ICON_UNLINK: return R.drawable.ic_action_unlink;
             default:return R.drawable.ic_action_new;
         }
     }
 
-    private void selectItem(String action) {
+    protected void selectItem(String action) {
         Log.i(TAG,"Action: " + action);
         switch (action){
             case Work.STATE_ACTIVE:
@@ -254,17 +270,17 @@ public class MainActivity extends ActionBarActivity {
                 setTitle(tagTasks[5]);
                 actualView = Work.STATE_COMPLETE;
                 break;
-            case "message":
+            case ACTION_MESSAGE:
                 setTitle(tagOptions[1]);
                 break;
-            case "history":
+            case ACTION_HISTORY:
                 setTitle(tagOptions[2]);
                 break;
-            case "logout":
+            case ACTION_LOGOUT:
                 LogoutDialog logoutDialog = new LogoutDialog();
                 logoutDialog.show(getFragmentManager(), TAG);
                 break;
-            case "unlink":
+            case ACTION_UNLINK:
                 UnlinkDialog unlinkDialog = new UnlinkDialog();
                 unlinkDialog.show(getFragmentManager(),TAG);
                 break;

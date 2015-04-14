@@ -50,7 +50,8 @@ public class GcmIntentService extends IntentService {
                 // If it's a regular GCM message, do some work.
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                 new WSLoadWorks(getApplication(),new UserPrefecences(getApplication()).readPreferences().getHash()).getWorks();
-                sendNotification(extras.getString("description").split(",")[0], extras.getString("description").split(",")[1]);
+                //sendNotification(extras.getString("description").split(",")[0], extras.getString("description").split(",")[1].toUpperCase());
+                sendNotification(intent.getStringExtra("id_task"),intent.getStringExtra("description"));
                 Log.i(TAG, "Received: " + extras.toString());
             }
         }

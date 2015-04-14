@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.naddiaz.tfg.bletasker.R;
 import com.naddiaz.tfg.bletasker.utils.UserPrefecences;
+import com.naddiaz.tfg.bletasker.webservices.WSGcmRegistration;
 
 /**
  * Created by nad on 12/04/15.
@@ -24,7 +25,9 @@ public class UnlinkDialog extends DialogFragment {
 
         builder.setPositiveButton(getResources().getString(R.string.dialog_unlink_device), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                new UserPrefecences(getActivity()).clearPreferences();
+                UserPrefecences userPreferences = new UserPrefecences(getActivity()).readPreferences();
+                new WSGcmRegistration(getActivity(),userPreferences.getId_airport(),userPreferences.getId_person(),userPreferences.getWorker_name(),userPreferences.getHash()).unlinkRegistrationId();
+                userPreferences.clearPreferences();
                 getActivity().finish();
             }
         });

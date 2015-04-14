@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -12,6 +13,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.naddiaz.tfg.bletasker.R;
+import com.naddiaz.tfg.bletasker.utils.CustomRequest;
+import com.naddiaz.tfg.bletasker.utils.UserPrefecences;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +32,7 @@ public class WSGcmRegistration {
     private String id_push;
 
     private static String URL;
+    private static String URLunlink;
 
 
     public WSGcmRegistration(Context ctx, int id_airport, String id_person, String worker_name, String id_push) {
@@ -35,12 +41,36 @@ public class WSGcmRegistration {
         this.id_person = id_person;
         this.id_push = id_push;
         this.URL = ctx.getResources().getString(R.string.ws_url_gcm_registration);
+        this.URLunlink = ctx.getResources().getString(R.string.ws_url_gcm_registration_unlink);
     }
 
     public void saveRegistrationId(){
         RequestQueue queue = Volley.newRequestQueue(this.ctx);
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, URL,
+        Map<String, String>  params = new HashMap<String, String>();
+        params.put("id_airport", String.valueOf(id_airport));
+        params.put("id_person", id_person);
+        params.put("id_push", id_push);
+
+        CustomRequest jsObjRequest = new CustomRequest(Request.Method.POST, URL, params,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i("Response",response.toString());
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Error.Response", String.valueOf(error));
+            }
+        });
+        queue.add(jsObjRequest);
+    }
+
+    public void unlinkRegistrationId(){
+        RequestQueue queue = Volley.newRequestQueue(this.ctx);
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, URLunlink,
                 new Response.Listener<String>()
                 {
                     @Override

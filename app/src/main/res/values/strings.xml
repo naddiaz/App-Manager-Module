@@ -55,6 +55,7 @@
     <string name="ws_url_data_hash_registration">http://tfg.naddiaz.com/hash/confirm</string>
     <string name="ws_url_data_hash_verify">http://tfg.naddiaz.com/hash/verify</string>
     <string name="ws_url_gcm_registration">http://tfg.naddiaz.com/gcm/registration</string>
+    <string name="ws_url_gcm_registration_unlink">http://tfg.naddiaz.com/gcm/registration/unlink</string>
     <string name="ws_url_load_works">http://tfg.naddiaz.com/employee/get/tasks</string>
     <string name="ws_url_state_work">http://tfg.naddiaz.com/employee/set/task/state</string>
 

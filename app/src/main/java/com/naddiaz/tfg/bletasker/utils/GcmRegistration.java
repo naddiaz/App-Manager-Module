@@ -52,6 +52,10 @@ public class GcmRegistration {
         if (regid.isEmpty()) {
             registerInBackground();
         }
+        else{
+            Log.i(TAG,"REGID: " + regid);
+            sendRegistrationIdToBackend();
+        }
     }
 
     private String getRegistrationId(Context context) {
@@ -97,7 +101,7 @@ public class GcmRegistration {
                     }
                     regid = gcm.register(SENDER_ID);
                     msg = "Device registered, registration ID=" + regid;
-
+                    Log.i(TAG,"REGID BACK: " + msg);
                     sendRegistrationIdToBackend();
                     storeRegistrationId(context, regid);
                 } catch (IOException ex) {

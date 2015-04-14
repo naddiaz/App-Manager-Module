@@ -95,7 +95,7 @@ public class TaskListViewAdapter extends BaseAdapter{
         txtItemHour.setText(hour);
 
         TextView txtItemDescription = (TextView) convertView.findViewById(R.id.txtItemDescription);
-        txtItemDescription.setText(taskItem.getDescription());
+        txtItemDescription.setText(taskItem.getDescription().toUpperCase());
 
         TextView txtItemPriority = (TextView) convertView.findViewById(R.id.txtItemPriority);
         txtItemPriority.setText(String.valueOf(taskItem.getPriority()));
@@ -127,7 +127,7 @@ public class TaskListViewAdapter extends BaseAdapter{
 
         Button btnItemFinish = (Button) convertView.findViewById(R.id.btnItemFinish);
         if(this.state == Work.STATE_COMPLETE){
-            lytItemActions.setVisibility(View.INVISIBLE);
+            lytItemActions.setVisibility(View.GONE);
             lytItemTopBlock.setBackgroundDrawable(ctx.getResources().getDrawable(R.color.md_blue_500));
         }
         else {
@@ -165,7 +165,7 @@ public class TaskListViewAdapter extends BaseAdapter{
 
         final Button btnItemCancel = (Button) convertView.findViewById(R.id.btnItemCancel);
         if(this.state == Work.STATE_CANCEL){
-            lytItemActions.setVisibility(View.INVISIBLE);
+            lytItemActions.setVisibility(View.GONE);
             lytItemTopBlock.setBackgroundDrawable(ctx.getResources().getDrawable(R.color.md_red_500));
         }
         else {
