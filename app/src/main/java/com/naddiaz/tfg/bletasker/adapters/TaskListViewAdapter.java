@@ -134,9 +134,7 @@ public class TaskListViewAdapter extends BaseAdapter{
             btnItemFinish.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    workDB.updateWorkState(taskItem, Work.STATE_COMPLETE);
-                    wsWorksState.setWorkState(taskItem.getId_task(), Work.STATE_COMPLETE);
-                    FinishWorkDialog finishWorkDialog = new FinishWorkDialog(taskListViewAdapter,parent.getChildAt(position), position);
+                    FinishWorkDialog finishWorkDialog = new FinishWorkDialog(taskListViewAdapter,parent.getChildAt(position), position,taskItem,workDB,wsWorksState);
                     finishWorkDialog.show(manager, "FinishDialog");
                 }
             });
@@ -172,9 +170,7 @@ public class TaskListViewAdapter extends BaseAdapter{
             btnItemCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    workDB.updateWorkState(taskItem, Work.STATE_CANCEL);
-                    wsWorksState.setWorkState(taskItem.getId_task(), Work.STATE_CANCEL);
-                    CancelWorkDialog cancelWorkDialog = new CancelWorkDialog(taskListViewAdapter,parent.getChildAt(position), position);
+                    CancelWorkDialog cancelWorkDialog = new CancelWorkDialog(taskListViewAdapter,parent.getChildAt(position), position,taskItem,workDB,wsWorksState);
                     cancelWorkDialog.show(manager,"CancelDialog");
                 }
             });

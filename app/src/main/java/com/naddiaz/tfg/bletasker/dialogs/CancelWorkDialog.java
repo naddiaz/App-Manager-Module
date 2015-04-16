@@ -10,7 +10,10 @@ import android.view.View;
 
 import com.naddiaz.tfg.bletasker.R;
 import com.naddiaz.tfg.bletasker.adapters.TaskListViewAdapter;
+import com.naddiaz.tfg.bletasker.database.Work;
+import com.naddiaz.tfg.bletasker.database.WorksDbHelper;
 import com.naddiaz.tfg.bletasker.utils.UserPrefecences;
+import com.naddiaz.tfg.bletasker.webservices.WSWorkState;
 import com.naddiaz.tfg.bletasker.widget.MainActivity;
 
 /**
@@ -23,11 +26,17 @@ public class CancelWorkDialog extends DialogFragment {
     TaskListViewAdapter taskListViewAdapter;
     View child;
     int position;
+    private WorksDbHelper workDB;
+    private WSWorkState wsWorksState;
+    private Work taskItem;
 
-    public CancelWorkDialog(TaskListViewAdapter taskListViewAdapter, View childAt, int position) {
+    public CancelWorkDialog(TaskListViewAdapter taskListViewAdapter, View childAt, int position, Work taskItem, WorksDbHelper worksDbHelper, WSWorkState wsWorksState) {
         this.taskListViewAdapter = taskListViewAdapter;
         this.child = childAt;
         this.position = position;
+        this.taskItem = taskItem;
+        this.wsWorksState = wsWorksState;
+        this.workDB = worksDbHelper;
     }
 
     @Override
@@ -41,6 +50,8 @@ public class CancelWorkDialog extends DialogFragment {
         builder.setPositiveButton(getResources().getString(R.string.dialog_cancel_work), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 taskListViewAdapter.removeListItem(child,position);
+                workDB.updateWorkState(taskItem, Work.STATE_CANCEL);
+                wsWorksState.setWorkState(taskItem.getId_task(), Work.STATE_CANCEL);
             }
         });
 

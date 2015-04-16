@@ -32,6 +32,7 @@ import com.naddiaz.tfg.bletasker.database.WorksDbHelper;
 import com.naddiaz.tfg.bletasker.dialogs.LogoutDialog;
 import com.naddiaz.tfg.bletasker.dialogs.UnlinkDialog;
 import com.naddiaz.tfg.bletasker.utils.UserPrefecences;
+import com.naddiaz.tfg.bletasker.webservices.WSLoadWorks;
 
 import java.util.ArrayList;
 
@@ -76,6 +77,7 @@ public class MainActivity extends ActionBarActivity {
     private final static String[] actionsConfiguration = {ACTION_LOGOUT,ACTION_UNLINK};
 
     private WorksDbHelper worksDbHelper;
+    private WSLoadWorks wsLoadWorks;
     Context context;
 
 
@@ -89,6 +91,7 @@ public class MainActivity extends ActionBarActivity {
         if (checkPlayServices()) {
             userPrefecences = new UserPrefecences(getApplication()).readPreferences();
             worksDbHelper = new WorksDbHelper(context);
+            wsLoadWorks = new WSLoadWorks(context,userPrefecences.getHash());
             createDrawerNavigation();
             if (savedInstanceState == null) {
                 Bundle extras = getIntent().getExtras();
@@ -118,14 +121,21 @@ public class MainActivity extends ActionBarActivity {
         super.onResume();
         checkPlayServices();
         setTitle(itemTitle);
+        wsLoadWorks.getWorks();
         Log.i(TAG,"onResume");
     }
+
 
     @Override
     protected void onPause(){
         super.onPause();
         Log.i(TAG,"onPause");
-        SplashActivity.ctx.finish();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        Log.i(TAG,"onDestroy");
     }
 
     private void createDrawerNavigation(){

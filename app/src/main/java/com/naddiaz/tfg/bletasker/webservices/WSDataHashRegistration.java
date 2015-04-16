@@ -98,6 +98,8 @@ public class WSDataHashRegistration {
                                 }
                                 else{
                                     Intent intent = new Intent(ctx,MainActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     ctx.startActivity(intent);
                                 }
                             } catch (JSONException e) {

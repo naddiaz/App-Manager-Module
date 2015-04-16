@@ -88,7 +88,7 @@
     <string name="drawer_close">Cerrar navigation drawer</string>
     <string name="headlines">Estás en </string>
     <string name="txt_welcome">Bienvenido</string>
-    <string name="txt_loading_data_register">Cargando datos de registro...</string>
+    <string name="txt_loading_data_register">Cargando registro...</string>
     <string name="txt_advertisement_welcome_message">En este momento vamos a proceder a configurar la aplicación, tendrá que introducir el código que la empresa le ha proporcionado</string>
     <string name="txt_advertisement_welcome_message_remember">Si no los tiene o no los recuerda, por favor indíqueselo a la empresa para que se los proporcione de nuevo.</string>
     <string name="btn_advertisement_ok">Entendido</string>

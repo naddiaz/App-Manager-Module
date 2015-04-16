@@ -31,14 +31,11 @@ public class SplashActivity extends ActionBarActivity {
     protected static final String READDATA_FRAGMENT_TAG = "ReadDataFragment";
     protected static final String ADVERTISEMT_FRAGMENT_TAG = "AdvertisementFragment";
 
-    public static SplashActivity ctx;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         getSupportActionBar().hide();
-        ctx = this;
 
         UserPrefecences userPrefecences = new UserPrefecences(this.getApplication()).readPreferences();
 
@@ -47,7 +44,6 @@ public class SplashActivity extends ActionBarActivity {
                     .add(R.id.container, new PreLoadingFragment())
                     .commit();
             new WSDataHashRegistration(this,userPrefecences.getHash()).verifySessionHash();
-            new WSLoadWorks(this,userPrefecences.getHash()).getWorks();
         }
         else if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -92,7 +88,7 @@ public class SplashActivity extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_splash_preloading, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_splash, container, false);
             return rootView;
         }
     }

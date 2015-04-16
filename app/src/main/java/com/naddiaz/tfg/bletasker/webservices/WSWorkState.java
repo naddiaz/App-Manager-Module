@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -13,6 +14,7 @@ import com.android.volley.toolbox.Volley;
 import com.naddiaz.tfg.bletasker.R;
 import com.naddiaz.tfg.bletasker.utils.CustomRequest;
 import com.naddiaz.tfg.bletasker.utils.UserPrefecences;
+import com.naddiaz.tfg.bletasker.utils.VolleySingleton;
 import com.naddiaz.tfg.bletasker.widget.MainActivity;
 import com.naddiaz.tfg.bletasker.widget.RestoreUserActivity;
 
@@ -28,18 +30,35 @@ import java.util.Map;
 public class WSWorkState {
 
 
+    private static final String TAG = "WSWorkState";
     private static String URL;
     Context ctx;
     String hash;
+    private final VolleySingleton volley;
+    private RequestQueue requestQueue;
 
     public WSWorkState(Context ctx, String hash){
         this.ctx = ctx;
         this.hash = hash;
         this.URL = ctx.getString(R.string.ws_url_state_work);
+        volley = VolleySingleton.getInstance(this.ctx);
+        requestQueue = volley.getRequestQueue();
+    }
+
+    private void addToQueue(Request request) {
+        if (request != null) {
+            request.setTag(this);
+            if (requestQueue == null)
+                requestQueue = volley.getRequestQueue();
+            request.setRetryPolicy(new DefaultRetryPolicy(
+                    10000, 5, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            ));
+            requestQueue.getCache().clear();
+            requestQueue.add(request);
+        }
     }
 
     public void setWorkState(String id_task,String state){
-        RequestQueue queue = Volley.newRequestQueue(ctx);
 
         Map<String, String>  params = new HashMap<String, String>();
         params.put("hash", hash);
@@ -50,6 +69,7 @@ public class WSWorkState {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        Log.i(TAG,response.toString());
                         if(response.has("status")){
                             try {
                                 if(response.getString("status") == "false") {
@@ -70,6 +90,6 @@ public class WSWorkState {
                 Log.d("Error.Response", String.valueOf(error));
             }
         });
-        queue.add(jsObjRequest);
+        addToQueue(jsObjRequest);
     }
 }

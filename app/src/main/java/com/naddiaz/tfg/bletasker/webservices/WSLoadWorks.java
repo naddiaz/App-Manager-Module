@@ -6,16 +6,18 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.naddiaz.tfg.bletasker.R;
 import com.naddiaz.tfg.bletasker.database.Work;
 import com.naddiaz.tfg.bletasker.database.WorksDbHelper;
 import com.naddiaz.tfg.bletasker.utils.CustomRequest;
+import com.naddiaz.tfg.bletasker.utils.VolleySingleton;
 import com.naddiaz.tfg.bletasker.widget.MainActivity;
 import com.naddiaz.tfg.bletasker.widget.RestoreUserActivity;
 
@@ -36,6 +38,8 @@ public class WSLoadWorks {
     private String hash;
     WorksDbHelper worksDB;
     private static String URL;
+    private final VolleySingleton volley;
+    private RequestQueue requestQueue;
 
 
     public WSLoadWorks(Context ctx, String hash) {
@@ -43,14 +47,29 @@ public class WSLoadWorks {
         this.hash = hash;
         this.URL = ctx.getResources().getString(R.string.ws_url_load_works);
         worksDB = new WorksDbHelper(ctx);
+        volley = VolleySingleton.getInstance(this.ctx);
+        requestQueue = volley.getRequestQueue();
+    }
+
+    private void addToQueue(Request request) {
+        if (request != null) {
+            request.setTag(this);
+            if (requestQueue == null) {
+                requestQueue = volley.getRequestQueue();
+            }
+            requestQueue.getCache().clear();
+            request.setRetryPolicy(new DefaultRetryPolicy(
+                    10000, 5, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            ));
+            requestQueue.add(request);
+        }
     }
 
     public WSLoadWorks getWorks(){
-        RequestQueue queue = Volley.newRequestQueue(this.ctx);
 
         Map<String, String>  params = new HashMap<String, String>();
         params.put("hash", hash);
-
+        Log.i(TAG,"hash = " + hash);
         CustomRequest jsObjRequest = new CustomRequest(Request.Method.POST, URL, params,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -79,7 +98,7 @@ public class WSLoadWorks {
                 Log.d("Error.Response", String.valueOf(error));
             }
         });
-        queue.add(jsObjRequest);
+        addToQueue(jsObjRequest);
         return this;
     }
 
@@ -90,59 +109,6 @@ public class WSLoadWorks {
                 JSONObject JSONwork = works.getJSONObject(i);
                 createWork(worksDB, JSONwork, state);
             }
-        }
-    }
-
-    public WSLoadWorks syncWorks(){
-        RequestQueue queue = Volley.newRequestQueue(this.ctx);
-
-        Map<String, String>  params = new HashMap<String, String>();
-        params.put("hash", hash);
-
-        CustomRequest jsObjRequest = new CustomRequest(Request.Method.POST, URL, params,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.i(TAG,response.toString());
-                        if(response.has("status")){
-                            Toast.makeText(ctx, ctx.getString(R.string.ws_error_load_works), Toast.LENGTH_LONG).show();
-                        }
-                        else{
-                            try {
-                                syncJSONWorks(response, Work.GROUP_COMPLETE);
-                                syncJSONWorks(response, Work.GROUP_ACTIVE);
-                                syncJSONWorks(response, Work.GROUP_PAUSE);
-                                syncJSONWorks(response, Work.GROUP_PENDING);
-                                syncJSONWorks(response, Work.GROUP_CANCEL);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(ctx,ctx.getString(R.string.ws_error_timeout_works),Toast.LENGTH_LONG).show();
-                Log.d("Error.Response", String.valueOf(error));
-            }
-        });
-        queue.add(jsObjRequest);
-        return this;
-    }
-
-    private void syncJSONWorks(JSONObject response, String state) throws JSONException {
-        JSONArray works = response.getJSONArray(state);
-        if(works.length() > 0) {
-            for (int i = 0; i < works.length(); i++) {
-                JSONObject JSONwork = works.getJSONObject(i);
-                Work actualWork = worksDB.getWork(JSONwork.getString(Work.FIELD_ID_TASK));
-                if(actualWork == null){
-                    createWork(worksDB, JSONwork, state);
-                }
-            }
-        }
-        else{
-            worksDB.clearWorks();
         }
     }
 
@@ -171,10 +137,5 @@ public class WSLoadWorks {
         }
         work.setCreated_at(JSONwork.getString(Work.FIELD_CREATED_AT));
         worksDB.createWork(work);
-    }
-
-    private void updateWork(WorksDbHelper worksDB, JSONObject JSONwork, String state) throws JSONException {
-        worksDB.clearWork(JSONwork.getString(Work.FIELD_ID_TASK));
-        createWork(worksDB,JSONwork,state);
     }
 }
