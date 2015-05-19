@@ -53,25 +53,13 @@
 
         <!-- suppress AndroidDomInspection -->
         <service
-            android:name=".services.BeaconService"
+            android:name=".services.BeaconManager"
             android:exported="false" />
 
-        <activity
-            android:name=".widget.HomeActivity"
-            android:label="@string/title_activity_home" >
-        </activity>
-        <activity
-            android:name=".widget.HomeDrawerActivity"
-            android:label="@string/title_activity_home_drawer" >
-        </activity>
         <activity
             android:name=".widget.MainActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_main" >
-        </activity>
-        <activity
-            android:name=".widget.LoginActivity"
-            android:label="@string/title_activity_home" >
         </activity>
         <activity
             android:name=".widget.RestoreUserActivity"

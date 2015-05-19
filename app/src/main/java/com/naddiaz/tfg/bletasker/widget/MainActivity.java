@@ -4,6 +4,7 @@ package com.naddiaz.tfg.bletasker.widget;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,6 +32,7 @@ import com.naddiaz.tfg.bletasker.database.Work;
 import com.naddiaz.tfg.bletasker.database.WorksDbHelper;
 import com.naddiaz.tfg.bletasker.dialogs.LogoutDialog;
 import com.naddiaz.tfg.bletasker.dialogs.UnlinkDialog;
+import com.naddiaz.tfg.bletasker.services.BeaconManager;
 import com.naddiaz.tfg.bletasker.utils.UserPrefecences;
 import com.naddiaz.tfg.bletasker.webservices.WSLoadWorks;
 
@@ -90,6 +92,14 @@ public class MainActivity extends ActionBarActivity {
         context = getApplicationContext();
         if (checkPlayServices()) {
             userPrefecences = new UserPrefecences(getApplication()).readPreferences();
+
+            Log.i(TAG,"Check beacon manager state: " + userPrefecences.getBeaconManagerState());
+            if(userPrefecences.getBeaconManagerState()){
+                userPrefecences.saveBeaconManagerState(false);
+                Intent intent = new Intent(MainActivity.this, BeaconManager.class);
+                startService(intent);
+            }
+
             worksDbHelper = new WorksDbHelper(context);
             wsLoadWorks = new WSLoadWorks(context,userPrefecences.getHash());
             createDrawerNavigation();
@@ -154,7 +164,7 @@ public class MainActivity extends ActionBarActivity {
                         .setAvatar(getResources().getDrawable(R.drawable.logo_full))
                         .setBackground(getResources().getDrawable(R.color.green_grey))
                         .setName(userPrefecences.getWorker_name().toUpperCase())
-                        .setDescription("ID empleado: " + userPrefecences.getId_person())
+                        .setDescription(getString(R.string.subheader_navigation) + userPrefecences.getId_person())
         );
         drawer.addItem(
                 new DrawerItem().setTextPrimary(tagTasks[0])

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.naddiaz.tfg.bletasker.R;
+import com.naddiaz.tfg.bletasker.utils.UserPrefecences;
 
 /**
  * Created by nad on 12/04/15.
@@ -24,6 +25,7 @@ public class LogoutDialog extends DialogFragment{
 
         builder.setPositiveButton(getResources().getString(R.string.dialog_close_session), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                new UserPrefecences(getActivity()).readPreferences().saveBeaconManagerState(true);
                 getActivity().finish();
             }
         });

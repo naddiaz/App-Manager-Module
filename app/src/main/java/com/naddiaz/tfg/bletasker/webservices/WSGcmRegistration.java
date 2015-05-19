@@ -40,8 +40,8 @@ public class WSGcmRegistration {
         this.id_airport = id_airport;
         this.id_person = id_person;
         this.id_push = id_push;
-        this.URL = ctx.getResources().getString(R.string.ws_url_gcm_registration);
-        this.URLunlink = ctx.getResources().getString(R.string.ws_url_gcm_registration_unlink);
+        this.URL = ctx.getString(R.string.host) + ctx.getResources().getString(R.string.ws_url_gcm_registration);
+        this.URLunlink = ctx.getString(R.string.host) + ctx.getResources().getString(R.string.ws_url_gcm_registration_unlink);
     }
 
     public void saveRegistrationId(){

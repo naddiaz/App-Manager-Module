@@ -20,12 +20,14 @@ public class UserPrefecences {
     public static final String PROPERTY_ID_PERSON = "id_person";
     public static final String PROPERTY_WORKER_NAME = "worker_name";
     public static final String PROPERTY_HASH = "hash";
+    private static final String PROPERTY_BEACON_MANAGER_STATE = "beacon_manager_state";
 
     Context ctx;
     private int id_airport;
     private String id_person;
     private String worker_name;
     private String hash;
+    private Boolean beacon_manager_state;
 
     public UserPrefecences(Context ctx){
         this.ctx = ctx;
@@ -61,6 +63,13 @@ public class UserPrefecences {
         this.ctx.startActivity(intent);
     }
 
+    public void saveBeaconManagerState(boolean state){
+        final SharedPreferences prefs = getGCMPreferences(ctx);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(PROPERTY_BEACON_MANAGER_STATE, state);
+        editor.commit();
+    }
+
     public UserPrefecences readPreferences(){
         final SharedPreferences prefs = getGCMPreferences(ctx);
         hash = prefs.getString(PROPERTY_HASH, "");
@@ -72,7 +81,7 @@ public class UserPrefecences {
         id_airport = prefs.getInt(PROPERTY_ID_AIRPORT, 0);
         id_person = prefs.getString(PROPERTY_ID_PERSON, "");
         worker_name = prefs.getString(PROPERTY_WORKER_NAME, "");
-
+        beacon_manager_state = prefs.getBoolean(PROPERTY_BEACON_MANAGER_STATE,true);
         return this;
     }
 
@@ -100,5 +109,9 @@ public class UserPrefecences {
 
     public String getHash(){
         return this.hash;
+    }
+
+    public Boolean getBeaconManagerState(){
+        return this.beacon_manager_state;
     }
 }

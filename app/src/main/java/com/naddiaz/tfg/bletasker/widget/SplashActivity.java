@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.naddiaz.tfg.bletasker.R;
 import com.naddiaz.tfg.bletasker.listeners.DataHashRegisterListener;
+import com.naddiaz.tfg.bletasker.services.BeaconManager;
 import com.naddiaz.tfg.bletasker.utils.UserPrefecences;
 import com.naddiaz.tfg.bletasker.webservices.WSDataHashRegistration;
 import com.naddiaz.tfg.bletasker.webservices.WSLoadWorks;

@@ -46,8 +46,8 @@ public class WSDataHashRegistration {
     public WSDataHashRegistration(Context ctx, String hash){
         this.ctx = ctx;
         this.hash = hash;
-        this.URLcheckRegistration = ctx.getString(R.string.ws_url_data_hash_registration);
-        this.URLverify = ctx.getString(R.string.ws_url_data_hash_verify);
+        this.URLcheckRegistration = ctx.getString(R.string.host) +  ctx.getString(R.string.ws_url_data_hash_registration);
+        this.URLverify = ctx.getString(R.string.host) +  ctx.getString(R.string.ws_url_data_hash_verify);
     }
 
     public void checkRegisterHash(){

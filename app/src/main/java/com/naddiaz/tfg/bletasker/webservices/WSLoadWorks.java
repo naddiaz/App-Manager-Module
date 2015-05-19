@@ -45,7 +45,7 @@ public class WSLoadWorks {
     public WSLoadWorks(Context ctx, String hash) {
         this.ctx = ctx;
         this.hash = hash;
-        this.URL = ctx.getResources().getString(R.string.ws_url_load_works);
+        this.URL = ctx.getString(R.string.host) + ctx.getResources().getString(R.string.ws_url_load_works);
         worksDB = new WorksDbHelper(ctx);
         volley = VolleySingleton.getInstance(this.ctx);
         requestQueue = volley.getRequestQueue();

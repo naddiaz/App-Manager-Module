@@ -44,7 +44,7 @@ public class WorksDbHelper extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.i(TAG, "Create BBDD");
+        //Log.i(TAG, "Create BBDD");
         db.execSQL(CREATE_TABLE_IF_NOT_EXIST_WORK);
     }
 
@@ -66,11 +66,10 @@ public class WorksDbHelper extends SQLiteOpenHelper {
             values.put(Work.FIELD_STATE, work.getState());
             values.put(Work.FIELD_CREATED_AT, work.getCreated_at());
 
-            long retValue = db.insert(TABLE_NAME, null, values);
-            Log.i(TAG,"RetVal: " + String.valueOf(retValue));
+            db.insert(TABLE_NAME, null, values);
         }
         else{
-            Log.i(TAG, "STATE: " + String.valueOf(this.getWork(work.getId_task()).getState()));
+            //Log.i(TAG, "STATE: " + String.valueOf(this.getWork(work.getId_task()).getState()));
             this.clearWork(work.getId_task());
             this.createWork(work);
         }
@@ -101,7 +100,7 @@ public class WorksDbHelper extends SQLiteOpenHelper {
                 work.setN_employees(cursor.getInt(cursor.getColumnIndex(Work.FIELD_N_EMPLOYEES)));
                 work.setState(cursor.getString(cursor.getColumnIndex(Work.FIELD_STATE)));
                 work.setCreated_at(cursor.getString(cursor.getColumnIndex(Work.FIELD_CREATED_AT)));
-                Log.i(TAG,"Single" + work.toString());
+                //Log.i(TAG,"Single" + work.toString());
                 return work;
             }
             else{
@@ -127,7 +126,7 @@ public class WorksDbHelper extends SQLiteOpenHelper {
                 work.setN_employees(cursor.getInt(cursor.getColumnIndex(Work.FIELD_N_EMPLOYEES)));
                 work.setState(cursor.getString(cursor.getColumnIndex(Work.FIELD_STATE)));
                 work.setCreated_at(cursor.getString(cursor.getColumnIndex(Work.FIELD_CREATED_AT)));
-                Log.i(TAG,"ArrayList" + work.toString());
+                //Log.i(TAG,"ArrayList" + work.toString());
                 works.add(work);
             }
             return works;

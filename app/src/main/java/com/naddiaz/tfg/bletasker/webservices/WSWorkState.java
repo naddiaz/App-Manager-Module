@@ -40,7 +40,7 @@ public class WSWorkState {
     public WSWorkState(Context ctx, String hash){
         this.ctx = ctx;
         this.hash = hash;
-        this.URL = ctx.getString(R.string.ws_url_state_work);
+        this.URL = ctx.getString(R.string.host) + ctx.getString(R.string.ws_url_state_work);
         volley = VolleySingleton.getInstance(this.ctx);
         requestQueue = volley.getRequestQueue();
     }
