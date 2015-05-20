@@ -51,6 +51,7 @@ public class UserPrefecences {
         return this;
     }
 
+
     public void savePreferences(){
         final SharedPreferences prefs = getGCMPreferences(ctx);
         SharedPreferences.Editor editor = prefs.edit();
@@ -114,4 +115,6 @@ public class UserPrefecences {
     public Boolean getBeaconManagerState(){
         return this.beacon_manager_state;
     }
+
+
 }

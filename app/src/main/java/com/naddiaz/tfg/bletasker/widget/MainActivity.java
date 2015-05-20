@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -33,10 +34,25 @@ import com.naddiaz.tfg.bletasker.database.WorksDbHelper;
 import com.naddiaz.tfg.bletasker.dialogs.LogoutDialog;
 import com.naddiaz.tfg.bletasker.dialogs.UnlinkDialog;
 import com.naddiaz.tfg.bletasker.services.BeaconManager;
+import com.naddiaz.tfg.bletasker.utils.RSACrypt;
 import com.naddiaz.tfg.bletasker.utils.UserPrefecences;
 import com.naddiaz.tfg.bletasker.webservices.WSLoadWorks;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -92,8 +108,39 @@ public class MainActivity extends ActionBarActivity {
         context = getApplicationContext();
         if (checkPlayServices()) {
             userPrefecences = new UserPrefecences(getApplication()).readPreferences();
-
-            Log.i(TAG,"Check beacon manager state: " + userPrefecences.getBeaconManagerState());
+            RSACrypt rsa = new RSACrypt(userPrefecences.getId_airport(),userPrefecences.getId_person());
+            String crypt = null;
+            try {
+                crypt = rsa.RSAEncrypt("Hello world");
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (InvalidKeySpecException e) {
+                e.printStackTrace();
+            } catch (NoSuchPaddingException e) {
+                e.printStackTrace();
+            } catch (InvalidKeyException e) {
+                e.printStackTrace();
+            } catch (BadPaddingException e) {
+                e.printStackTrace();
+            } catch (IllegalBlockSizeException e) {
+                e.printStackTrace();
+            }
+            try {
+                rsa.RSADecrypt(crypt);
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (InvalidKeySpecException e) {
+                e.printStackTrace();
+            } catch (NoSuchPaddingException e) {
+                e.printStackTrace();
+            } catch (InvalidKeyException e) {
+                e.printStackTrace();
+            } catch (BadPaddingException e) {
+                e.printStackTrace();
+            } catch (IllegalBlockSizeException e) {
+                e.printStackTrace();
+            }
+            Log.i(TAG, "Check beacon manager state: " + userPrefecences.getBeaconManagerState());
             if(userPrefecences.getBeaconManagerState()){
                 userPrefecences.saveBeaconManagerState(false);
                 Intent intent = new Intent(MainActivity.this, BeaconManager.class);
@@ -364,5 +411,4 @@ public class MainActivity extends ActionBarActivity {
         actualView = savedInstanceState.getString("actualView");
         selectItem(actualView);
     }
-
 }
