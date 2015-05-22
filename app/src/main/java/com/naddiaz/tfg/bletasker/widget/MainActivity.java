@@ -47,6 +47,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 
@@ -109,37 +110,9 @@ public class MainActivity extends ActionBarActivity {
         if (checkPlayServices()) {
             userPrefecences = new UserPrefecences(getApplication()).readPreferences();
             RSACrypt rsa = new RSACrypt(userPrefecences.getId_airport(),userPrefecences.getId_person());
-            String crypt = null;
-            try {
-                crypt = rsa.RSAEncrypt("Hello world");
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (InvalidKeySpecException e) {
-                e.printStackTrace();
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
-            }
-            try {
-                rsa.RSADecrypt(crypt);
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (InvalidKeySpecException e) {
-                e.printStackTrace();
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
-            }
+            String crypt = rsa.crypt("Hello world");
+            Log.i(TAG,crypt);
+            Log.i(TAG,rsa.decrypt(crypt));
             Log.i(TAG, "Check beacon manager state: " + userPrefecences.getBeaconManagerState());
             if(userPrefecences.getBeaconManagerState()){
                 userPrefecences.saveBeaconManagerState(false);
