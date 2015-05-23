@@ -20,6 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -27,6 +28,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.Signature;
+import java.security.SignatureException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -112,6 +115,27 @@ public class RSACrypt {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static boolean verify(String signature,String message){
+        Signature verifier= null;
+        try {
+            verifier = Signature.getInstance("SHA256withRSA");
+            verifier.initVerify(getPublicKey());
+            verifier.update(message.getBytes());
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (SignatureException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        }
+        try {
+            return verifier.verify(Base64.decode(signature,Base64.DEFAULT));
+        } catch (SignatureException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private static PrivateKey getPrivateKey(){

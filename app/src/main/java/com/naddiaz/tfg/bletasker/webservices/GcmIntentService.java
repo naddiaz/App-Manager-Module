@@ -66,34 +66,38 @@ public class GcmIntentService extends IntentService {
         UserPrefecences userPrefecences = new UserPrefecences(getApplication()).readPreferences();
         RSACrypt rsa = new RSACrypt(userPrefecences.getId_airport(),userPrefecences.getId_person());
         String description = rsa.decrypt(message);
-        Log.i(TAG,description);
-        mNotificationManager = (NotificationManager)
-                this.getSystemService(Context.NOTIFICATION_SERVICE);
+        if(!rsa.verify(sign,description)) {
+            Log.i(TAG, "No show message because origin doesn't know");
+        }
+        else {
+            mNotificationManager = (NotificationManager)
+                    this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(Work.PENDING_TASK, true);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, 0);
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra(Work.PENDING_TASK, true);
+            PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
 
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.logo_mini)
-                        .setContentTitle("Nueva Actividad")
-                        .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText(description))
-                        .setContentText(description);
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(this)
+                            .setSmallIcon(R.drawable.logo_mini)
+                            .setContentTitle("BLE Tasker")
+                            .setStyle(new NotificationCompat.BigTextStyle()
+                                    .bigText(description))
+                            .setContentText(description);
 
-        mBuilder.setContentIntent(contentIntent);
-        mBuilder.setAutoCancel(true);
+            mBuilder.setContentIntent(contentIntent);
+            mBuilder.setAutoCancel(true);
 
-        //Sonido
-        Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        mBuilder.setSound(defaultSound);
+            //Sonido
+            Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            mBuilder.setSound(defaultSound);
 
-        //Vibración
-        long[] pattern = new long[]{0,500,1000};
-        mBuilder.setVibrate(pattern);
+            //Vibración
+            long[] pattern = new long[]{0, 100, 100, 100, 100, 100, 1000};
+            mBuilder.setVibrate(pattern);
 
-        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+            mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+        }
     }
 }
