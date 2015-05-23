@@ -107,12 +107,8 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer_main);
         context = getApplicationContext();
+        userPrefecences = new UserPrefecences(getApplication()).readPreferences();
         if (checkPlayServices()) {
-            userPrefecences = new UserPrefecences(getApplication()).readPreferences();
-            RSACrypt rsa = new RSACrypt(userPrefecences.getId_airport(),userPrefecences.getId_person());
-            String crypt = rsa.crypt("Hello world");
-            Log.i(TAG,crypt);
-            Log.i(TAG,rsa.decrypt(crypt));
             Log.i(TAG, "Check beacon manager state: " + userPrefecences.getBeaconManagerState());
             if(userPrefecences.getBeaconManagerState()){
                 userPrefecences.saveBeaconManagerState(false);

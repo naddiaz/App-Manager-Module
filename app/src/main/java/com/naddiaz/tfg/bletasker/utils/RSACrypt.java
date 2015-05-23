@@ -24,6 +24,7 @@ import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
@@ -47,22 +48,15 @@ import static javax.crypto.Cipher.*;
  */
 public class RSACrypt {
 
-    private static String PUBLIC_KEY = "PUBLIC_KEY";
-    private static final String PUBLIC_KEY_HEADER = "-----BEGIN PUBLIC KEY-----";
-    private static final String PUBLIC_KEY_FOOTER = "-----END PUBLIC KEY-----";
-    private static String PRIVATE_KEY = "PRIVATE_KEY";
-    private static final String PRIVATE_KEY_HEADER = "-----BEGIN PRIVATE KEY-----";
-    private static final String PRIVATE_KEY_FOOTER = "-----END PRIVATE KEY-----";
-
-    private int id_airport;
-    private String id_person;
+    private static int id_airport;
+    private static String id_person;
 
     public RSACrypt(int id_airport, String id_person){
         this.id_airport = id_airport;
         this.id_person = id_person;
     }
 
-    public String crypt(String plain){
+    public static String crypt(String plain){
 
         Cipher pkCipher = null;
         try {
@@ -90,10 +84,10 @@ public class RSACrypt {
         return Base64.encodeToString(encryptedInByte,Base64.DEFAULT);
     }
 
-    public String decrypt(String encode){
+    public static String decrypt(String encode){
         Cipher pkCipher = null;
         try {
-            pkCipher = Cipher.getInstance("RSA/ECB/PKCS1PADDING");
+            pkCipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (NoSuchPaddingException e) {
@@ -120,18 +114,17 @@ public class RSACrypt {
         return null;
     }
 
-    private PrivateKey getPrivateKey(){
+    private static PrivateKey getPrivateKey(){
         PrivateKey privateKey = null;
         try {
-            privateKey = PrivateKeyReader.get(Environment.getExternalStorageDirectory().getAbsolutePath() + "/ssl/server.private.der");
-            //privateKey = PrivateKeyReader.get(Environment.getExternalStorageDirectory().getAbsolutePath() + "/ssl/a" + String.valueOf(id_airport) + "e" + id_person + ".private.der");
+            privateKey = PrivateKeyReader.get(Environment.getExternalStorageDirectory().getAbsolutePath() + "/ssl/a" + String.valueOf(id_airport) + "e" + id_person + ".private.der");
         } catch (Exception e) {
             e.printStackTrace();
         }
         return privateKey;
     }
 
-    private PublicKey getPublicKey(){
+    private static PublicKey getPublicKey(){
         PublicKey publicKey = null;
         try {
             publicKey = PublicKeyReader.get(Environment.getExternalStorageDirectory().getAbsolutePath() + "/ssl/server.public.der");

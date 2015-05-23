@@ -2,6 +2,7 @@ package com.naddiaz.tfg.bletasker.webservices;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.naddiaz.tfg.bletasker.R;
 import com.naddiaz.tfg.bletasker.database.Work;
+import com.naddiaz.tfg.bletasker.utils.RSACrypt;
 import com.naddiaz.tfg.bletasker.utils.UserPrefecences;
 import com.naddiaz.tfg.bletasker.widget.MainActivity;
 
@@ -50,8 +51,7 @@ public class GcmIntentService extends IntentService {
                 // If it's a regular GCM message, do some work.
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                 new WSLoadWorks(getApplication(),new UserPrefecences(getApplication()).readPreferences().getHash()).getWorks();
-                //sendNotification(extras.getString("description").split(",")[0], extras.getString("description").split(",")[1].toUpperCase());
-                sendNotification(intent.getStringExtra("id_task"),intent.getStringExtra("description"));
+                sendNotification(intent.getStringExtra("sign"),intent.getStringExtra("message"));
                 Log.i(TAG, "Received: " + extras.toString());
             }
         }
@@ -62,7 +62,11 @@ public class GcmIntentService extends IntentService {
     // Put the message into a notification and post it.
     // This is just one simple example of what you might choose to do with
     // a GCM message.
-    private void sendNotification(String title, String description) {
+    private void sendNotification(String sign, String message) {
+        UserPrefecences userPrefecences = new UserPrefecences(getApplication()).readPreferences();
+        RSACrypt rsa = new RSACrypt(userPrefecences.getId_airport(),userPrefecences.getId_person());
+        String description = rsa.decrypt(message);
+        Log.i(TAG,description);
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -74,7 +78,7 @@ public class GcmIntentService extends IntentService {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.logo_mini)
-                        .setContentTitle(title)
+                        .setContentTitle("Nueva Actividad")
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(description))
                         .setContentText(description);
