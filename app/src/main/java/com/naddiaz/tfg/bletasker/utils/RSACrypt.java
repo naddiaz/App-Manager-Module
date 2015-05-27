@@ -90,7 +90,7 @@ public class RSACrypt {
     public static String decrypt(String encode){
         Cipher pkCipher = null;
         try {
-            pkCipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
+            pkCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (NoSuchPaddingException e) {
@@ -141,7 +141,8 @@ public class RSACrypt {
     private static PrivateKey getPrivateKey(){
         PrivateKey privateKey = null;
         try {
-            privateKey = PrivateKeyReader.get(Environment.getExternalStorageDirectory().getAbsolutePath() + "/ssl/a" + String.valueOf(id_airport) + "e" + id_person + ".private.der");
+            //privateKey = PrivateKeyReader.get(Environment.getExternalStorageDirectory().getAbsolutePath() + "/ssl/a" + String.valueOf(id_airport) + "e" + id_person + ".private.der");
+            privateKey = PrivateKeyReader.get(Environment.getExternalStorageDirectory().getAbsolutePath() + "/ssl/employee.private.der");
         } catch (Exception e) {
             e.printStackTrace();
         }

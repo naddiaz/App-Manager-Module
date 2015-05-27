@@ -35,12 +35,21 @@ public class UserPrefecences {
 
     public UserPrefecences(Context ctx, JSONObject data){
         this.ctx = ctx;
-        Log.i(TAG,data.toString());
         try {
-            this.id_airport = data.getInt("id_airport");
-            this.id_person = data.getString("id_person");
-            this.worker_name = data.getString("worker_name");
-            this.hash = data.getString("hash");
+            JSONObject response = new JSONObject(data.toString());
+            Log.i("response: ", response.toString());
+            String responseDecrypt = RSACrypt.decrypt(response.getString("response").toString());
+            Log.i("responseDecrypt: ", responseDecrypt);
+            JSONObject clearData = new JSONObject(responseDecrypt);
+            Log.i("clearData: ", clearData.toString());
+            try {
+                this.id_airport = clearData.getInt("id_airport");
+                this.id_person = clearData.getString("id_person");
+                this.worker_name = clearData.getString("worker_name");
+                this.hash = clearData.getString("hash");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

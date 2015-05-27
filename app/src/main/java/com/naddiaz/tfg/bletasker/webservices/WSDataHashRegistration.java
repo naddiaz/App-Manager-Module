@@ -20,6 +20,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.naddiaz.tfg.bletasker.R;
 import com.naddiaz.tfg.bletasker.utils.CustomRequest;
+import com.naddiaz.tfg.bletasker.utils.RSACrypt;
 import com.naddiaz.tfg.bletasker.utils.UserPrefecences;
 import com.naddiaz.tfg.bletasker.widget.MainActivity;
 import com.naddiaz.tfg.bletasker.widget.RestoreUserActivity;
@@ -52,14 +53,15 @@ public class WSDataHashRegistration {
 
     public void checkRegisterHash(){
         RequestQueue queue = Volley.newRequestQueue(ctx);
-
+        queue.getCache().clear();
         Map<String, String>  params = new HashMap<String, String>();
-        params.put("hash", hash);
-
+        params.put("data", RSACrypt.crypt(hash));
+        Log.i("bletasker", RSACrypt.crypt(hash));
         CustomRequest jsObjRequest = new CustomRequest(Request.Method.POST, URLcheckRegistration, params,
                 new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                Log.i("bletasker",response.toString());
                 if(response.has("status")){
                     Toast.makeText(ctx,ctx.getString(R.string.ws_error_hash_false),Toast.LENGTH_SHORT).show();
                 }
@@ -81,9 +83,9 @@ public class WSDataHashRegistration {
 
     public void verifySessionHash(){
         RequestQueue queue = Volley.newRequestQueue(ctx);
-
+        queue.getCache().clear();
         Map<String, String>  params = new HashMap<String, String>();
-        params.put("hash", hash);
+        params.put("data", RSACrypt.crypt(hash));
 
         CustomRequest jsObjRequest = new CustomRequest(Request.Method.POST, URLverify, params,
                 new Response.Listener<JSONObject>() {

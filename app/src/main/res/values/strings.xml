@@ -52,7 +52,7 @@
     </string-array>
 
     <!--URLs-->
-    <string name="host">http://52.24.4.177</string>
+    <string name="host">http://tfg.naddiaz.com</string>
     <string name="ws_url_data_hash_registration">/hash/confirm</string>
     <string name="ws_url_data_hash_verify">/hash/verify</string>
     <string name="ws_url_gcm_registration">/gcm/registration</string>

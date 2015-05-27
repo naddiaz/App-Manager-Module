@@ -63,10 +63,8 @@ public class GcmIntentService extends IntentService {
     // This is just one simple example of what you might choose to do with
     // a GCM message.
     private void sendNotification(String sign, String message) {
-        UserPrefecences userPrefecences = new UserPrefecences(getApplication()).readPreferences();
-        RSACrypt rsa = new RSACrypt(userPrefecences.getId_airport(),userPrefecences.getId_person());
-        String description = rsa.decrypt(message);
-        if(!rsa.verify(sign,description)) {
+        String description = RSACrypt.decrypt(message);
+        if(!RSACrypt.verify(sign, description)) {
             Log.i(TAG, "No show message because origin doesn't know");
         }
         else {
