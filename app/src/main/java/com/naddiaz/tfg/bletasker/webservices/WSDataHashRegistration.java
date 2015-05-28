@@ -1,22 +1,14 @@
 package com.naddiaz.tfg.bletasker.webservices;
 
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
-import com.android.volley.NetworkResponse;
-import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.naddiaz.tfg.bletasker.R;
 import com.naddiaz.tfg.bletasker.utils.CustomRequest;
@@ -24,12 +16,10 @@ import com.naddiaz.tfg.bletasker.utils.RSACrypt;
 import com.naddiaz.tfg.bletasker.utils.UserPrefecences;
 import com.naddiaz.tfg.bletasker.widget.MainActivity;
 import com.naddiaz.tfg.bletasker.widget.RestoreUserActivity;
-import com.naddiaz.tfg.bletasker.widget.SplashActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -20,6 +20,7 @@ public class UserPrefecences {
     public static final String PROPERTY_ID_PERSON = "id_person";
     public static final String PROPERTY_WORKER_NAME = "worker_name";
     public static final String PROPERTY_HASH = "hash";
+    public static final String PROPERTY_TOKEN = "token";
     private static final String PROPERTY_BEACON_MANAGER_STATE = "beacon_manager_state";
 
     Context ctx;
@@ -27,6 +28,8 @@ public class UserPrefecences {
     private String id_person;
     private String worker_name;
     private String hash;
+
+    private String token;
     private Boolean beacon_manager_state;
 
     public UserPrefecences(Context ctx){
@@ -37,11 +40,8 @@ public class UserPrefecences {
         this.ctx = ctx;
         try {
             JSONObject response = new JSONObject(data.toString());
-            Log.i("response: ", response.toString());
             String responseDecrypt = RSACrypt.decrypt(response.getString("response").toString());
-            Log.i("responseDecrypt: ", responseDecrypt);
             JSONObject clearData = new JSONObject(responseDecrypt);
-            Log.i("clearData: ", clearData.toString());
             try {
                 this.id_airport = clearData.getInt("id_airport");
                 this.id_person = clearData.getString("id_person");
@@ -60,6 +60,11 @@ public class UserPrefecences {
         return this;
     }
 
+    public void saveToken(String token){
+        final SharedPreferences prefs = getGCMPreferences(ctx);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(PROPERTY_TOKEN, token);
+    }
 
     public void savePreferences(){
         final SharedPreferences prefs = getGCMPreferences(ctx);
@@ -84,13 +89,13 @@ public class UserPrefecences {
         final SharedPreferences prefs = getGCMPreferences(ctx);
         hash = prefs.getString(PROPERTY_HASH, "");
         if (hash.isEmpty()) {
-            Log.i(TAG, "Registration not found.");
             return null;
         }
 
         id_airport = prefs.getInt(PROPERTY_ID_AIRPORT, 0);
         id_person = prefs.getString(PROPERTY_ID_PERSON, "");
         worker_name = prefs.getString(PROPERTY_WORKER_NAME, "");
+        token = prefs.getString(PROPERTY_TOKEN, "");
         beacon_manager_state = prefs.getBoolean(PROPERTY_BEACON_MANAGER_STATE,true);
         return this;
     }
@@ -125,5 +130,7 @@ public class UserPrefecences {
         return this.beacon_manager_state;
     }
 
-
+    public String getToken() {
+        return token;
+    }
 }

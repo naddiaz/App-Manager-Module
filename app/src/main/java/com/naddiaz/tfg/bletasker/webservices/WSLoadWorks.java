@@ -1,8 +1,7 @@
 package com.naddiaz.tfg.bletasker.webservices;
 
 import android.content.Context;
-import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -11,15 +10,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.*;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.naddiaz.tfg.bletasker.R;
 import com.naddiaz.tfg.bletasker.database.Work;
 import com.naddiaz.tfg.bletasker.database.WorksDbHelper;
 import com.naddiaz.tfg.bletasker.utils.CustomRequest;
+import com.naddiaz.tfg.bletasker.utils.RSACrypt;
+import com.naddiaz.tfg.bletasker.utils.UserPrefecences;
 import com.naddiaz.tfg.bletasker.utils.VolleySingleton;
-import com.naddiaz.tfg.bletasker.widget.MainActivity;
-import com.naddiaz.tfg.bletasker.widget.RestoreUserActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,12 +37,14 @@ public class WSLoadWorks {
     private static String URL;
     private final VolleySingleton volley;
     private RequestQueue requestQueue;
-
+    private UserPrefecences userPrefecences;
+    private static final String DELIMITER = "==";
 
     public WSLoadWorks(Context ctx, String hash) {
         this.ctx = ctx;
         this.hash = hash;
         this.URL = ctx.getString(R.string.host) + ctx.getResources().getString(R.string.ws_url_load_works);
+        this.userPrefecences = new UserPrefecences(ctx).readPreferences();
         worksDB = new WorksDbHelper(ctx);
         volley = VolleySingleton.getInstance(this.ctx);
         requestQueue = volley.getRequestQueue();
@@ -67,19 +66,55 @@ public class WSLoadWorks {
 
     public WSLoadWorks getWorks(){
 
+        String token= userPrefecences.getToken();
         Map<String, String>  params = new HashMap<String, String>();
-        params.put("hash", hash);
-        Log.i(TAG,"hash = " + hash);
+        params.put("data", RSACrypt.crypt(this.hash));
+        params.put("token", RSACrypt.crypt(token));
+
         CustomRequest jsObjRequest = new CustomRequest(Request.Method.POST, URL, params,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.i(TAG,response.toString());
                         if(response.has("status")){
-                            Toast.makeText(ctx, ctx.getString(R.string.ws_error_load_works), Toast.LENGTH_LONG).show();
+                            try {
+                                if(!response.getBoolean("status")) {
+                                    Toast.makeText(ctx, ctx.getString(R.string.ws_error_load_works), Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    Log.i(TAG,"LA lista de trabajos está actualizada");
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                         else{
-                            try {
+                            if(response.has("token")) {
+                                try {
+                                    String tokenB64 = response.getString("token");
+                                    Log.i(TAG,tokenB64);
+                                    String tokenDecrypt = RSACrypt.decrypt(tokenB64);
+                                    Log.i(TAG,tokenDecrypt);
+                                    userPrefecences.saveToken(tokenDecrypt);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            if(response.has("response")){
+                                try {
+                                    String responseB64 = response.getString("response");
+                                    Log.i(TAG,responseB64);
+                                    String[] splitResponse = responseB64.split(DELIMITER);
+                                    String responseDecrypt = "";
+                                    for(int i=0; i<splitResponse.length; i++){
+                                         responseDecrypt += RSACrypt.decrypt(splitResponse[i]+DELIMITER);
+                                    }
+                                    Log.i(TAG, responseDecrypt);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            /*try {
                                 worksDB.clearWorks();
                                 getJSONWorks(response,Work.GROUP_COMPLETE);
                                 getJSONWorks(response,Work.GROUP_ACTIVE);
@@ -88,7 +123,7 @@ public class WSLoadWorks {
                                 getJSONWorks(response,Work.GROUP_CANCEL);
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                            }
+                            }*/
                         }
                     }
                 }, new Response.ErrorListener() {

@@ -117,6 +117,22 @@ public class RSACrypt {
         return null;
     }
 
+    public static String sign(String text) {
+        try {
+            Signature signature = Signature.getInstance("SHA256withRSA");
+            signature.initSign(getPrivateKey());
+            signature.update(text.getBytes());
+            return Base64.encodeToString(signature.sign(),Base64.DEFAULT);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (SignatureException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static boolean verify(String signature,String message){
         Signature verifier= null;
         try {
