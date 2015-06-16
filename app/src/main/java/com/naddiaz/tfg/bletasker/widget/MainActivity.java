@@ -167,7 +167,7 @@ public class MainActivity extends ActionBarActivity {
     private void createDrawerNavigation(){
         itemTitle = getTitle();
         tagTasks = getResources().getStringArray(R.array.tagTasks);
-        tagOptions = getResources().getStringArray(R.array.tagOptions);
+        //tagOptions = getResources().getStringArray(R.array.tagOptions);
         tagConfiguration = getResources().getStringArray(R.array.tagConfiguration);
 
         getSupportActionBar().setHomeButtonEnabled(true);

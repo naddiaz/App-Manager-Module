@@ -67,6 +67,7 @@ public class WSLoadWorks {
     public WSLoadWorks getWorks(){
 
         String token= userPrefecences.getToken();
+        Log.i("TOKEN: ",token);
         Map<String, String>  params = new HashMap<String, String>();
         params.put("data", RSACrypt.crypt(this.hash));
         params.put("token", RSACrypt.crypt(token));
@@ -82,7 +83,7 @@ public class WSLoadWorks {
                                     Toast.makeText(ctx, ctx.getString(R.string.ws_error_load_works), Toast.LENGTH_LONG).show();
                                 }
                                 else{
-                                    Log.i(TAG,"La lista de trabajos está actualizada");
+                                    Log.i(TAG,"La lista de trabajos esta actualizada");
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

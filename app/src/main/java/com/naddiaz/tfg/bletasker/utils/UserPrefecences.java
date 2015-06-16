@@ -64,6 +64,7 @@ public class UserPrefecences {
         final SharedPreferences prefs = getGCMPreferences(ctx);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(PROPERTY_TOKEN, token);
+        editor.commit();
     }
 
     public void savePreferences(){
