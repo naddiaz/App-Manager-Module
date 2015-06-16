@@ -201,7 +201,7 @@ public class MainActivity extends ActionBarActivity {
                             })
             );
         }
-        drawer.addItem(
+        /*drawer.addItem(
                 new DrawerItem().setTextPrimary(tagOptions[0])
         );
         drawer.addDivider();
@@ -219,7 +219,7 @@ public class MainActivity extends ActionBarActivity {
                                 }
                             })
             );
-        }
+        }*/
         //Configuration elements into the DrawerNavigation
         drawer.addItem(
                 new DrawerItem().setTextPrimary(tagConfiguration[0])
@@ -306,12 +306,14 @@ public class MainActivity extends ActionBarActivity {
                 setTitle(tagTasks[5]);
                 actualView = Work.STATE_COMPLETE;
                 break;
+            /*
             case ACTION_MESSAGE:
                 setTitle(tagOptions[1]);
                 break;
             case ACTION_HISTORY:
                 setTitle(tagOptions[2]);
                 break;
+             */
             case ACTION_LOGOUT:
                 LogoutDialog logoutDialog = new LogoutDialog();
                 logoutDialog.show(getFragmentManager(), TAG);

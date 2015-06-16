@@ -22,7 +22,7 @@ public class WorksDbHelper extends SQLiteOpenHelper {
     private static final String TAG = "WorksDbHelper";
 
     private static final String DATABASE_NAME = "BLETASKER";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String TABLE_NAME = "WORK";
 
 

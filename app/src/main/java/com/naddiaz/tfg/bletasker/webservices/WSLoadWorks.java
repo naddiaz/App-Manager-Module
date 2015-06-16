@@ -82,7 +82,7 @@ public class WSLoadWorks {
                                     Toast.makeText(ctx, ctx.getString(R.string.ws_error_load_works), Toast.LENGTH_LONG).show();
                                 }
                                 else{
-                                    Log.i(TAG,"LA lista de trabajos está actualizada");
+                                    Log.i(TAG,"La lista de trabajos está actualizada");
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -101,11 +101,11 @@ public class WSLoadWorks {
                                 }
                             }
                             if(response.has("response")){
+                                String responseDecrypt = "";
                                 try {
                                     String responseB64 = response.getString("response");
                                     Log.i(TAG,responseB64);
                                     String[] splitResponse = responseB64.split(DELIMITER);
-                                    String responseDecrypt = "";
                                     for(int i=0; i<splitResponse.length; i++){
                                          responseDecrypt += RSACrypt.decrypt(splitResponse[i]+DELIMITER);
                                     }
@@ -113,17 +113,19 @@ public class WSLoadWorks {
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
+                                try {
+                                    worksDB.clearWorks();
+                                    JSONObject responseD = new JSONObject(responseDecrypt);
+                                    getJSONWorks(responseD,Work.GROUP_COMPLETE);
+                                    getJSONWorks(responseD,Work.GROUP_ACTIVE);
+                                    getJSONWorks(responseD, Work.GROUP_PAUSE);
+                                    getJSONWorks(responseD,Work.GROUP_PENDING);
+                                    getJSONWorks(responseD, Work.GROUP_CANCEL);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                            /*try {
-                                worksDB.clearWorks();
-                                getJSONWorks(response,Work.GROUP_COMPLETE);
-                                getJSONWorks(response,Work.GROUP_ACTIVE);
-                                getJSONWorks(response,Work.GROUP_PAUSE);
-                                getJSONWorks(response,Work.GROUP_PENDING);
-                                getJSONWorks(response,Work.GROUP_CANCEL);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }*/
+
                         }
                     }
                 }, new Response.ErrorListener() {
